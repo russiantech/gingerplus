@@ -1,0 +1,16 @@
+html { scroll-behavior: smooth; }
+body { font-family: var(--sr-font-body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, .display-font { font-family: var(--sr-font-display); letter-spacing: -0.01em; }
+img { max-width: 100%; }
+.min-vh-60 { min-height: 60vh; }
+.cursor-pointer { cursor: pointer; }
+.fs-xs { font-size: 0.75rem; } .fs-sm { font-size: 0.875rem; }
+.lh-tight { line-height: 1.2; }
+.object-fit-contain { object-fit: contain; }
+.rounded-xl { border-radius: var(--sr-radius) !important; }
+.shadow-soft { box-shadow: var(--sr-shadow) !important; }
+.card { --bs-card-border-radius: var(--sr-radius); --bs-card-inner-border-radius: var(--sr-radius); }
+.skeleton { background: linear-gradient(90deg, rgba(173,136,77,.12) 25%, rgba(173,136,77,.22) 50%, rgba(173,136,77,.12) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; border-radius: 8px; }
+@keyframes sk { to { background-position: -200% 0; } }
+.spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }
+:focus-visible { outline: 2px solid var(--sr-gold); outline-offset: 2px; }

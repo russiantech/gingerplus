@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 340" role="img" aria-label="Ginger Plus Turmeric 350ml placeholder">
+<defs><linearGradient id="l" x1="0" x2="1"><stop offset="0" stop-color="#F6C453"/><stop offset=".5" stop-color="#E8A317"/><stop offset="1" stop-color="#E8A317" stop-opacity=".85"/></linearGradient>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8EC"/><stop offset="1" stop-color="#F6E7C8"/></linearGradient></defs>
+<rect width="200" height="340" fill="url(#bg)" rx="12"/>
+<ellipse cx="100" cy="330" rx="64.0" ry="6" fill="#7f4e1a" opacity=".18"/>
+<rect x="85.0" y="-4" width="30" height="22" rx="4" fill="#3a2a14"/>
+<path d="M85.0 18 h30 v14 q0 8 33.0 24 H52.0 q0.0 0 0 0 z" fill="none"/>
+<rect x="52.0" y="30" width="96" height="300" rx="16" fill="url(#l)"/>
+<rect x="58.0" y="120.0" width="84" height="126.0" rx="8" fill="#FFF8EC"/>
+<text x="100" y="162.0" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="13" fill="#7f4e1a">GINGER PLUS</text>
+<text x="100" y="192.0" text-anchor="middle" font-family="Arial" font-size="9" fill="#E8A317" font-weight="700">TURMERIC</text>
+<text x="100" y="219.0" text-anchor="middle" font-family="Arial" font-size="8" fill="#7f4e1a">350ml</text>
+<rect x="62.0" y="40" width="7" height="280" rx="3.5" fill="#fff" opacity=".28"/>
+</svg>

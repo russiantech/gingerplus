@@ -1,0 +1,27 @@
+.sf-hero-media { max-width: 520px; width: 100%; }
+.hero-slide h1 { font-size: clamp(2rem, 4.2vw, 3.4rem); font-weight: 800; line-height: 1.1; }
+.hero-slider .hero-arrow.prev { left: 14px; } .hero-slider .hero-arrow.next { right: 14px; }
+.hero-dots { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; z-index: 2; }
+.fade-slide { animation: fadeIn .6s ease; } @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.flavor-card { border-radius: 20px; padding: 1.75rem; color: #fff; height: 100%; position: relative; overflow: hidden; }
+.flavor-card::after { content: ""; position: absolute; right: -50px; bottom: -50px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,.12); }
+.flavor-card img { height: 150px; position: absolute; right: 8px; bottom: 8px; z-index: 1; filter: drop-shadow(0 10px 14px rgba(0,0,0,.25)); }
+.flavor-card .btn-light { position: relative; z-index: 2; }
+.size-card { border: 2px dashed var(--sr-brown-500); border-radius: 18px; padding: 1.5rem; background: var(--bs-body-bg); height: 100%; }
+.stat-pill { font-family: var(--sr-font-display); font-size: 2.4rem; font-weight: 800; color: var(--sr-gold); line-height: 1; }
+.thumb-btn { width: 72px; height: 72px; border: 2px solid transparent; border-radius: 12px; background: var(--sr-cream); padding: 4px; }
+.thumb-btn.active { border-color: var(--sr-gold); } .thumb-btn img { width: 100%; height: 100%; object-fit: contain; }
+.gallery-main { background: var(--sr-cream); border-radius: 20px; padding: 2rem; display: flex; justify-content: center; }
+.gallery-main img { max-height: 440px; object-fit: contain; }
+.accordion-sr .accordion-button:not(.collapsed) { background: var(--sr-gold-100); color: var(--sr-brown-700); box-shadow: none; }
+.testimonial-card { background: var(--bs-body-bg); border-radius: var(--sr-radius); box-shadow: var(--sr-shadow); padding: 1.5rem; height: 100%; position: relative; }
+.testimonial-card::before { content: "“"; position: absolute; top: -6px; right: 18px; font-family: var(--sr-font-display); font-size: 5rem; color: var(--sr-gold); opacity: .35; line-height: 1; }
+.post-card img { height: 190px; object-fit: cover; width: 100%; }
+.post-cover { background: linear-gradient(135deg, var(--sr-gold-100), var(--sr-cream-2)); height: 190px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--sr-brown-700); }
+.recipe-chip { cursor: pointer; border-radius: 999px; }
+.legal-section h5 { font-family: var(--sr-font-display); } .legal-section p { white-space: pre-line; color: var(--sr-muted); }
+.store-card { border-radius: var(--sr-radius); box-shadow: var(--sr-shadow); background: var(--bs-body-bg); padding: 1.25rem; height: 100%; }
+.contact-option { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem; border-radius: var(--sr-radius); background: var(--sr-cream); text-decoration: none; color: inherit; }
+.contact-option:hover { background: var(--sr-gold-100); color: inherit; }
+.container.section-sm, .container.section { padding-left: calc(var(--bs-gutter-x, 1.5rem) * .5); padding-right: calc(var(--bs-gutter-x, 1.5rem) * .5); }
+.flavor-card { min-height: 300px; }

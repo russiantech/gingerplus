@@ -1,0 +1,19 @@
+/* Commerce, auth & account */
+.cart-drawer { width: min(420px, 100vw); visibility: visible; }
+.cart-line { display: flex; gap: .85rem; padding: .9rem 0; border-bottom: 1px solid var(--bs-border-color); }
+.cart-line .thumb-lg { width: 72px; height: 88px; object-fit: contain; background: var(--sr-cream); border-radius: 12px; padding: 6px; flex-shrink: 0; }
+.summary-card { position: sticky; top: 92px; }
+.summary-line { display: flex; justify-content: space-between; gap: 1rem; font-size: .92rem; padding: .25rem 0; }
+.summary-total { font-size: 1.2rem; font-weight: 800; border-top: 1px dashed var(--bs-border-color); margin-top: .6rem; padding-top: .8rem; }
+.wholesale-banner { background: linear-gradient(120deg, var(--sr-brown-700), var(--sr-brown-900)); color: #fff; border-radius: 14px; padding: 1rem 1.2rem; }
+.step-panel { animation: fadeUp .25s ease; } @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } }
+.stepper { display: flex; gap: 1rem; flex-wrap: wrap; }
+.stepper .checkout-step { cursor: default; }
+.stepper .checkout-step.clickable { cursor: pointer; }
+.pay-option .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--sr-gold-100); color: var(--sr-brown-700); display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.result-icon { width: 84px; height: 84px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 2.6rem; }
+.result-icon.ok { background: rgba(91,140,58,.16); color: #4a7a2c; } .result-icon.bad { background: rgba(220,53,69,.13); color: #dc3545; } .result-icon.wait { background: var(--sr-gold-100); color: var(--sr-gold-600); }
+.addr-card { border: 2px solid var(--bs-border-color); border-radius: 12px; padding: .9rem 1rem; cursor: pointer; height: 100%; display: block; transition: .15s; }
+.addr-card.active { border-color: var(--sr-gold); background: var(--sr-gold-100); } .addr-card:hover { border-color: var(--sr-brown-500); }
+.stat-mini { border-radius: 14px; padding: 1rem 1.1rem; background: var(--sr-cream); }
+.order-thumb { width: 52px; height: 52px; object-fit: contain; background: var(--sr-cream); border-radius: 10px; padding: 3px; }

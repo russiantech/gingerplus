@@ -1,0 +1,77 @@
+/* Southern Rose design tokens — palette taken from the Ginger Plus carton (ginger brown, amber gold, cream). */
+:root {
+  --sr-brown-900: #3a2a14;
+  --sr-brown-700: #7f4e1a;
+  --sr-brown-500: #ad884d;
+  --sr-gold: #e8a317;
+  --sr-gold-600: #cf8f0c;
+  --sr-gold-100: #fff1cc;
+  --sr-honey: #b7791f;
+  --sr-guarana: #5b8c3a;
+  --sr-cream: #fbf6ec;
+  --sr-cream-2: #f6e7c8;
+  --sr-ink: #2b2112;
+  --sr-muted: #7a6a52;
+  --sr-radius: 14px;
+  --sr-shadow: 0 6px 24px rgba(58, 42, 20, 0.08);
+  --sr-shadow-lg: 0 18px 48px rgba(58, 42, 20, 0.16);
+  --sr-font-display: "Playfair Display", Georgia, serif;
+  --sr-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --bs-primary: #e8a317;
+  --bs-primary-rgb: 232, 163, 23;
+  --bs-link-color: #7f4e1a;
+  --bs-link-color-rgb: 127, 78, 26;
+  --bs-link-hover-color: #cf8f0c;
+  --bs-body-font-family: var(--sr-font-body);
+  --bs-body-color: var(--sr-ink);
+  --bs-body-bg: #fff;
+  --bs-border-radius: 10px;
+  --bs-border-radius-lg: var(--sr-radius);
+  --bs-success: #5b8c3a;
+  --bs-success-rgb: 91, 140, 58;
+  --bs-warning: #e8a317;
+  --bs-warning-rgb: 232, 163, 23;
+}
+[data-bs-theme="dark"] {
+  --bs-body-bg: #1b150c;
+  --bs-body-color: #f3e9d6;
+  --bs-link-color: #f5c04a;
+  --bs-link-hover-color: #ffd97a;
+  --bs-border-color: #3b2f1c;
+  --bs-secondary-bg: #251d11;
+  --bs-tertiary-bg: #221a0e;
+  --sr-cream: #251d11;
+  --sr-cream-2: #2f2514;
+  --sr-gold-100: #3a2c10;
+  --sr-muted: #bfae8e;
+  --sr-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Bootstrap component theming */
+.btn-primary { --bs-btn-bg: var(--sr-gold); --bs-btn-border-color: var(--sr-gold); --bs-btn-color: var(--sr-brown-900); --bs-btn-hover-bg: var(--sr-gold-600); --bs-btn-hover-border-color: var(--sr-gold-600); --bs-btn-hover-color: var(--sr-brown-900); --bs-btn-active-bg: var(--sr-gold-600); --bs-btn-active-border-color: var(--sr-gold-600); --bs-btn-active-color: var(--sr-brown-900); --bs-btn-disabled-bg: var(--sr-gold); --bs-btn-disabled-border-color: var(--sr-gold); --bs-btn-disabled-color: var(--sr-brown-900); --bs-btn-focus-shadow-rgb: 232, 163, 23; font-weight: 600; }
+.btn-outline-primary { --bs-btn-color: var(--sr-brown-700); --bs-btn-border-color: var(--sr-gold); --bs-btn-hover-bg: var(--sr-gold); --bs-btn-hover-border-color: var(--sr-gold); --bs-btn-hover-color: var(--sr-brown-900); --bs-btn-active-bg: var(--sr-gold); --bs-btn-active-border-color: var(--sr-gold); --bs-btn-active-color: var(--sr-brown-900); font-weight: 600; }
+[data-bs-theme="dark"] .btn-outline-primary { --bs-btn-color: #f5c04a; }
+.btn-dark { --bs-btn-bg: var(--sr-brown-700); --bs-btn-border-color: var(--sr-brown-700); --bs-btn-hover-bg: var(--sr-brown-900); --bs-btn-hover-border-color: var(--sr-brown-900); }
+.btn { --bs-btn-border-radius: 10px; }
+.btn-pill { border-radius: 999px; }
+.form-control:focus, .form-select:focus, .form-check-input:focus { border-color: var(--sr-gold); box-shadow: 0 0 0 0.2rem rgba(232, 163, 23, 0.22); }
+.form-check-input:checked { background-color: var(--sr-gold); border-color: var(--sr-gold); }
+.page-link { color: var(--sr-brown-700); }
+.page-item.active .page-link { background: var(--sr-gold); border-color: var(--sr-gold); color: var(--sr-brown-900); }
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link { background: var(--sr-gold); color: var(--sr-brown-900); }
+.progress-bar { background-color: var(--sr-gold); }
+.text-gold { color: var(--sr-gold) !important; }
+.text-brown { color: var(--sr-brown-700) !important; }
+.bg-cream { background: var(--sr-cream) !important; }
+.bg-brown { background: var(--sr-brown-700) !important; color: #fff; }
+.bg-gold-soft { background: var(--sr-gold-100) !important; }
+.badge-soft-success { background: rgba(91,140,58,.15); color: #3f6a24; }
+.badge-soft-warning { background: rgba(232,163,23,.18); color: #8a5d00; }
+.badge-soft-danger { background: rgba(220,53,69,.13); color: #b02a37; }
+.badge-soft-info { background: rgba(13,110,253,.12); color: #0a58ca; }
+.badge-soft-primary { background: rgba(127,78,26,.14); color: var(--sr-brown-700); }
+.badge-soft-secondary { background: rgba(108,117,125,.15); color: #495057; }
+[data-bs-theme="dark"] .badge-soft-success { color: #9fd47c; } [data-bs-theme="dark"] .badge-soft-warning { color: #f5c04a; }
+[data-bs-theme="dark"] .badge-soft-danger { color: #f1919a; } [data-bs-theme="dark"] .badge-soft-info { color: #8ab4ff; }
+[data-bs-theme="dark"] .badge-soft-primary { color: #f5c04a; } [data-bs-theme="dark"] .badge-soft-secondary { color: #ced4da; }

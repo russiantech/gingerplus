@@ -1,0 +1,10 @@
+.range-tabs .btn { --bs-btn-padding-y: .25rem; }
+.rank-bar { height: 6px; border-radius: 3px; background: rgba(173,136,77,.18); overflow: hidden; } .rank-bar > span { display: block; height: 100%; background: var(--sr-gold); }
+.order-items img { width: 48px; height: 48px; object-fit: contain; background: var(--sr-cream); border-radius: 10px; }
+.invoice-only { display: none; }
+@media print {
+  .admin-sidebar, .admin-topbar, .no-print, .toast-container { display: none !important; }
+  .admin-main { margin-left: 0 !important; } .admin-content { padding: 0 !important; }
+  .invoice-only { display: block !important; } .admin-card { box-shadow: none !important; border: 1px solid #ddd !important; }
+  body { background: #fff !important; }
+}
