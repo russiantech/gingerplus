@@ -1,8 +1,7 @@
-import type { Category, CheckoutRequest, CheckoutResponse, Order, Product, Promotion, Quote } from "@/types";
+import type { Category, CheckoutRequest, CheckoutResponse, InitPayment, Order, PaymentConfig, PaymentStatusOut, Product, Promotion, Quote } from "@/types";
 import { api } from "./http";
 
-export interface InitPayment { reference: string; authorization_url: string; access_code?: string | null; amount: number }
-export interface PaymentStatusOut { reference: string; status: "unpaid" | "pending" | "paid" | "failed" | "refunded"; amount: number; order_number?: string | null; paid_at?: string | null }
+export type { InitPayment, PaymentStatusOut };
 
 export const shopService = {
   categories: () => api.get<Category[]>("/catalog/categories"),
@@ -17,4 +16,8 @@ export const shopService = {
   payDirect: (d: { name: string; email: string; phone?: string; amount: number; order_number?: string; description?: string }) =>
     api.post<InitPayment>("/payments/direct", d),
   verifyPayment: (reference: string) => api.get<PaymentStatusOut>(`/payments/verify/${reference}`),
+  /** Browser → backend → provider: called right after the popup reports success. */
+  confirmPayment: (reference: string) => api.post<PaymentStatusOut>("/payments/verify", { reference }),
+  paymentConfig: () => api.get<PaymentConfig>("/payments/config"),
+  mockComplete: (reference: string, outcome: "success" | "failed") => api.post<{ detail: string }>("/payments/mock/complete", { reference, outcome }),
 };

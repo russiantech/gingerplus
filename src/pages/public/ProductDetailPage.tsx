@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
   const { add } = useCart(); const toast = useToast(); const { settings } = useSite();
   const [qty, setQty] = useState(1); const [img, setImg] = useState(0);
   useDocumentTitle(p?.meta_title || p?.name);
-  const variant = useMemo(() => p?.variants.find((v) => v.id === sp.get("variant")) ?? p?.variants[0], [p, sp]);
+  const variant = useMemo(() => p?.variants?.find((v) => v.id === sp.get("variant")) ?? p?.variants?.[0], [p, sp]);
   useEffect(() => setImg(0), [variant?.id]);
   if (loading) return <PageLoader />;
   if (error?.toLowerCase().includes("not found") || (!p && !error)) return <NotFoundPage />;
@@ -29,7 +29,7 @@ export default function ProductDetailPage() {
   const tier = [...variant.tiers].reverse().find((t) => qty >= t.min_qty);
   const shown = tier ? tier.price : price; const wholesale = packs >= settings.commerce.online_payment_max_packs;
   const gallery = Array.from(new Set([variant.image_url, ...p.images].filter(Boolean) as string[]));
-  const wa = waLink(settings.contact.whatsapp_numbers[0] ?? "", `Hello Southern Rose, I'd like to buy wholesale: ${qty} × ${p.name} (${variant.label}).`);
+  const wa = waLink(settings.contact.whatsapp_numbers?.[0] ?? "", `Hello Southern Rose, I'd like to buy wholesale: ${qty} × ${p.name} (${variant.label}).`);
   const ld = { "@context": "https://schema.org", "@type": "Product", name: p.name, description: p.short_description, offers: { "@type": "Offer", priceCurrency: "NGN", price: price, availability: variant.in_stock ? "InStock" : "OutOfStock" } };
 
   return (

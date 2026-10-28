@@ -33,7 +33,7 @@ export default function TrackOrderPage() {
           <div className="col-md-6"><Input label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div></div>
         {err && <div className="alert alert-danger py-2 fs-sm">{err}</div>}
         <button className="btn btn-primary w-100" disabled={busy}>{busy ? <Spinner size="sm" className="me-2" /> : <i className="ri-search-line me-1" />}Track order</button></div></form>
-      {order && <OrderView order={order} />}
+      {order && <OrderView order={order} onChanged={() => void lookup()} />}
     </div>
   );
 }

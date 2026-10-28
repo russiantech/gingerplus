@@ -9,7 +9,7 @@ import "@/styles/storefront.css";
 export default function ContactPage() {
   useDocumentTitle("Contact"); const [sp] = useSearchParams(); const { settings } = useSite(); const c = settings.contact; const s = settings.social;
   const opts = [
-    ["ri-whatsapp-line", "WhatsApp (Fastest)", c.whatsapp_numbers.join(" · "), waLink(c.whatsapp_numbers[0] ?? "", "Hello Southern Rose")],
+    ["ri-whatsapp-line", "WhatsApp (Fastest)", c.whatsapp_numbers.join(" · "), waLink(c.whatsapp_numbers?.[0] ?? "", "Hello Southern Rose")],
     ["ri-phone-line", "Phone", `${c.phone} · ${c.phone_hours}`, `tel:${c.phone}`],
     ["ri-mail-line", "Email", c.email, `mailto:${c.email}`],
     ["ri-map-pin-line", "Visit Us", c.address, c.maps_url],

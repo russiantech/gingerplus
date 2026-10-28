@@ -8,14 +8,29 @@ import { useSite } from "@/contexts/SiteContext";
 import { usePageTracking, useScrollTop } from "@/hooks";
 import { waLink } from "@/utils/format";
 import Footer from "@/components/layout/Footer";
+import MobileMenu from "@/components/layout/MobileMenu";
 
 const NAV = [
-  { to: "/", label: "Home", end: true }, { to: "/shop", label: "Shop" }, { to: "/about-us", label: "About" },
-  { to: "/wholesale", label: "Wholesale" }, { to: "/recipes", label: "Recipes" }, { to: "/blog", label: "Blog" }, { to: "/contact", label: "Contact" },
+  { to: "/", label: "Home", end: true, icon: "ri-home-5-line", tint: "#fdf0cf", ink: "#9a6a0a" },
+  { to: "/shop", label: "Shop", icon: "ri-shopping-basket-2-line", tint: "#fde4d0", ink: "#b0561a" },
+  { to: "/about-us", label: "About", icon: "ri-seedling-line", tint: "#e3f0d8", ink: "#4a7a2c" },
+  { to: "/wholesale", label: "Wholesale", icon: "ri-store-3-line", tint: "#e6ecfb", ink: "#3b5bb5" },
+  { to: "/recipes", label: "Recipes", icon: "ri-cup-line", tint: "#fbe3ea", ink: "#b03a60" },
+  { to: "/blog", label: "Blog", icon: "ri-quill-pen-line", tint: "#ece4f7", ink: "#6a46a8" },
+  { to: "/contact", label: "Contact", icon: "ri-chat-smile-3-line", tint: "#dff3f1", ink: "#1f8a80" },
 ];
 const MORE = [
-  ["/our-ingredients", "Our Ingredients"], ["/health-benefits", "Health Benefits"], ["/bars-mixers", "Bars & Mixers"], ["/events-gifting", "Events & Gifting"],
-  ["/become-a-distributor", "Become a Distributor"], ["/find-a-store", "Find a Store"], ["/testimonials", "Testimonials"], ["/faq", "FAQ"], ["/media-press", "Media & Press"], ["/pay", "Pay Now"],
+  { to: "/our-ingredients", label: "Ingredients", icon: "ri-plant-line", tint: "#e3f0d8", ink: "#4a7a2c" },
+  { to: "/health-benefits", label: "Health Benefits", icon: "ri-heart-pulse-line", tint: "#fbe3ea", ink: "#b03a60" },
+  { to: "/bars-mixers", label: "Bars & Mixers", icon: "ri-goblet-line", tint: "#fdf0cf", ink: "#9a6a0a" },
+  { to: "/events-gifting", label: "Events & Gifting", icon: "ri-gift-2-line", tint: "#fde4d0", ink: "#b0561a" },
+  { to: "/become-a-distributor", label: "Distributor", icon: "ri-hand-coin-line", tint: "#e6ecfb", ink: "#3b5bb5" },
+  { to: "/find-a-store", label: "Find a Store", icon: "ri-map-pin-2-line", tint: "#dff3f1", ink: "#1f8a80" },
+  { to: "/testimonials", label: "Reviews", icon: "ri-star-smile-line", tint: "#fdf0cf", ink: "#9a6a0a" },
+  { to: "/faq", label: "FAQ", icon: "ri-question-answer-line", tint: "#ece4f7", ink: "#6a46a8" },
+  { to: "/media-press", label: "Media & Press", icon: "ri-newspaper-line", tint: "#e6ecfb", ink: "#3b5bb5" },
+  { to: "/pay", label: "Pay Now", icon: "ri-secure-payment-line", tint: "#e3f0d8", ink: "#4a7a2c" },
+  { to: "/track-order", label: "Track Order", icon: "ri-truck-line", tint: "#fde4d0", ink: "#b0561a" },
 ];
 
 export default function PublicLayout() {
@@ -24,12 +39,15 @@ export default function PublicLayout() {
   const { user } = useAuth();
   const { count, setOpen } = useCart();
   const [mobile, setMobile] = useState(false);
-  const wa = settings.contact.whatsapp_numbers[0] ?? "";
+  const wa = settings.contact.whatsapp_numbers?.[0] ?? "";
   const promo = settings.announcement.enabled ? settings.announcement.text : banners[0]?.text;
+
+  const home = user ? (user.user_type === "staff" ? "/admin" : user.user_type === "partner" ? "/partner" : "/account") : "/login";
+  const account = { to: home, label: user ? user.first_name : "Sign in", icon: "ri-user-smile-line", tint: "#ece4f7", ink: "#6a46a8" };
 
   return (
     <div className="public-shell d-flex flex-column min-vh-100">
-      <div className="topbar text-white small">
+      <div className="topline">
         <div className="container d-flex justify-content-between align-items-center py-2 gap-3">
           <span className="text-truncate"><i className="ri-leaf-line text-gold me-1" />{promo || settings.brand.slogan}</span>
           <span className="d-none d-md-flex gap-3">
@@ -39,35 +57,24 @@ export default function PublicLayout() {
           </span>
         </div>
       </div>
-      <header className="site-header sticky-top bg-body shadow-sm">
-        <div className="container d-flex align-items-center gap-3 py-2">
-          <button className="btn btn-link d-lg-none p-0 fs-3 text-body" aria-label="Menu" onClick={() => setMobile(true)}><i className="ri-menu-line" /></button>
-          <Link to="/" className="me-lg-4"><img src="/images/logo.svg" alt="Southern Rose Ginger Plus" height={44} className="logo-img" /></Link>
-          <nav className="d-none d-lg-flex gap-1 flex-grow-1 align-items-center">
+      <header className="site-header">
+        <div className="container"><div className="dock">
+          <button className="dock-menu-btn d-lg-none" aria-label="Open menu" onClick={() => setMobile(true)}><i className="ri-layout-grid-line" /></button>
+          <Link to="/" className="me-lg-3 mx-auto mx-lg-0" aria-label="Southern Rose home"><img src="/images/logo.svg" alt="Southern Rose Ginger Plus" className="logo-img" /></Link>
+          <nav className="d-none d-lg-flex gap-1 flex-grow-1 align-items-center justify-content-center">
             {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.end} className="nav-item-link">{n.label}</NavLink>)}
             <Dropdown toggle={(o) => <span className={`nav-item-link cursor-pointer ${o ? "active" : ""}`}>More <i className="ri-arrow-down-s-line" /></span>}>
-              {MORE.map(([to, label]) => <Link key={to} to={to} className="dropdown-item py-2">{label}</Link>)}
+              {MORE.map((m) => <Link key={m.to} to={m.to} className="dropdown-item py-2 d-flex align-items-center gap-2"><i className={`${m.icon} text-brown`} />{m.label}</Link>)}
             </Dropdown>
           </nav>
-          <div className="d-flex align-items-center gap-2 ms-auto">
-            <Link to={user ? (user.user_type === "staff" ? "/admin" : user.user_type === "partner" ? "/partner" : "/account") : "/login"} className="btn btn-light btn-pill d-none d-sm-inline-flex align-items-center gap-1">
-              <i className="ri-user-line" />{user ? user.first_name : "Sign in"}</Link>
-            <button className="btn btn-primary btn-pill position-relative" onClick={() => setOpen(true)} aria-label="Open cart"><i className="ri-shopping-bag-3-line me-1" /><span className="d-none d-sm-inline">Cart</span>
-              {count > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-brown">{count}</span>}</button>
+          <div className="d-flex align-items-center gap-2 ms-lg-0">
+            <Link to={home} className="dock-btn d-none d-md-inline-flex"><i className="ri-user-smile-line" />{user ? user.first_name : "Sign in"}</Link>
+            <button className="cart-btn" onClick={() => setOpen(true)} aria-label="Open cart"><span className="d-none d-sm-inline">Cart</span><span className="bag"><i className="ri-shopping-bag-3-line" />{count > 0 && <span className="count">{count}</span>}</span></button>
           </div>
-        </div>
+        </div></div>
       </header>
 
-      {mobile && <>
-        <div className="offcanvas-backdrop fade show" onClick={() => setMobile(false)} />
-        <div className="offcanvas offcanvas-start show" style={{ visibility: "visible" }} role="dialog">
-          <div className="offcanvas-header"><img src="/images/logo.svg" alt="Southern Rose" height={38} /><button className="btn-close" onClick={() => setMobile(false)} aria-label="Close" /></div>
-          <div className="offcanvas-body d-flex flex-column gap-1" onClick={() => setMobile(false)}>
-            {[...NAV.map((n) => [n.to, n.label]), ...MORE].map(([to, label]) => <NavLink key={to} to={to} end={to === "/"} className="mobile-link">{label}</NavLink>)}
-            <hr /><Link to={user ? "/account" : "/login"} className="mobile-link"><i className="ri-user-line me-2" />{user ? "My account" : "Sign in / Register"}</Link>
-            <Link to="/track-order" className="mobile-link"><i className="ri-truck-line me-2" />Track order</Link>
-          </div>
-        </div></>}
+      <MobileMenu open={mobile} onClose={() => setMobile(false)} primary={NAV} more={MORE.filter((m) => m.to !== "/track-order")} account={account} cartCount={count} onCart={() => setOpen(true)} phone={settings.contact.phone} waUrl={waLink(wa)} />
 
       <main className="flex-grow-1"><Outlet /></main>
       <Footer />

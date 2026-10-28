@@ -14,6 +14,8 @@ import { ApiError } from "@/services/http";
 import { shopService } from "@/services/shop";
 import type { Address, AddressInput, PaymentMethod } from "@/types";
 import { goToGateway } from "@/utils/gateway";
+import { usePayment } from "@/components/payments/PaymentProvider";
+import BankDetailsCard from "@/components/payments/BankDetailsCard";
 import "@/styles/commerce.css";
 
 const STEPS = ["Contact", "Delivery", "Payment"];
@@ -23,7 +25,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export default function CheckoutPage() {
   useDocumentTitle("Checkout");
   const { user } = useAuth(); const { lines, clear } = useCart(); const { settings } = useSite();
-  const toast = useToast(); const nav = useNavigate();
+  const toast = useToast(); const nav = useNavigate(); const { pay } = usePayment();
   const [step, setStep] = useState(0);
   const [contact, setContact] = useState({ name: "", email: "", phone: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -48,7 +50,8 @@ export default function CheckoutPage() {
   const { quote, loading, error } = useQuote(lines, state, appliedCoupon);
   const max = quote?.online_payment_max_packs ?? settings.commerce.online_payment_max_packs;
   const wholesale = !!quote?.is_wholesale;
-  const onlineOk = quote ? quote.online_payment_allowed : true;
+  const payCfg = useAsync(() => shopService.paymentConfig().catch(() => null), []);
+  const onlineOk = (quote ? quote.online_payment_allowed : true) && payCfg.data?.online.available !== false;
 
   // default / re-validate payment method as the cart changes
   useEffect(() => {
@@ -98,6 +101,12 @@ export default function CheckoutPage() {
         channel: method === "whatsapp" ? "whatsapp" : "web", request_store_match: matchStore,
       });
       clear();
+      if (res.next_step === "pay_online" && res.payment) {
+        // in-app popup: nothing redirects; the order page opens once the popup flow ends (paid, cancelled or pending)
+        const out = await pay(res.payment);
+        nav("/order-confirmation", { state: { order: res.order, next_step: out.status === "paid" ? "paid" : "retry_payment", whatsapp_url: res.whatsapp_url }, replace: true });
+        return;
+      }
       if (res.next_step === "pay_online" && res.authorization_url) { goToGateway(res.authorization_url); return; }
       if (res.next_step === "whatsapp" && res.whatsapp_url) window.open(res.whatsapp_url, "_blank", "noopener");
       nav("/order-confirmation", { state: { order: res.order, next_step: res.next_step, whatsapp_url: res.whatsapp_url }, replace: true });
@@ -117,7 +126,7 @@ export default function CheckoutPage() {
   );
 
   const payOpts: { key: Method; icon: string; title: string; text: string; show: boolean; primary?: boolean }[] = [
-    { key: "paystack", icon: "ri-bank-card-line", title: "Pay securely online", text: "Card, bank transfer or USSD via Paystack — instant confirmation.", show: onlineOk, primary: !wholesale },
+    { key: "paystack", icon: "ri-bank-card-line", title: "Pay securely online", text: "Card, bank transfer or USSD in a secure pop-up — instant confirmation.", show: onlineOk, primary: !wholesale },
     { key: "whatsapp", icon: "ri-whatsapp-line", title: "Order via WhatsApp", text: "We create your order now and continue the conversation on WhatsApp for wholesale confirmation.", show: wholesale, primary: wholesale },
     { key: "bank_transfer", icon: "ri-bank-line", title: "Bank transfer", text: "Place the order and pay by transfer. We'll email the account details and confirm on receipt.", show: wholesale || true },
   ];

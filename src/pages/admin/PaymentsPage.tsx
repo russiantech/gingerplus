@@ -37,12 +37,12 @@ export default function PaymentsPage() {
     { key: "o", header: "Order", render: (p) => p.order_id ? <Link to={`/admin/orders/${p.order_id}`}>{p.order_number ?? "View"}</Link> : "—" },
     { key: "d", header: "Date", render: (p) => <span className="text-muted fs-sm">{dateTime(p.paid_at ?? p.created_at)}</span> },
     { key: "x", header: "", render: (p) => p.status !== "paid" && p.status !== "refunded" && can("payments:confirm") ? <div className="d-flex gap-1 justify-content-end">
-      {p.provider === "paystack" && <button className="btn btn-sm btn-outline-primary" disabled={busyId === p.id} onClick={() => verify(p)}>Verify</button>}
+      {p.provider !== "manual" && p.provider !== "mock" && <button className="btn btn-sm btn-outline-primary" disabled={busyId === p.id} onClick={() => verify(p)}>Verify</button>}
       <button className="btn btn-sm btn-outline-secondary" onClick={() => { setNote(""); setTarget(p); }}>Confirm</button></div> : null },
   ];
   return (
     <>
-      <PageHeader title="Payments" subtitle="Paystack and manually recorded payments" />
+      <PageHeader title="Payments" subtitle="Online (Paystack / Flutterwave), bank transfer and manually recorded payments" />
       <div className="row g-3 mb-3">
         {([["paid", "Paid", "ri-checkbox-circle-line", "green"], ["pending", "Pending", "ri-time-line", "gold"], ["failed", "Failed", "ri-close-circle-line", "red"], ["refunded", "Refunded", "ri-refund-2-line", "brown"]] as const).map(([k, l, i, c]) =>
           <div className="col-sm-6 col-xl-3" key={k}><StatCard label={`${l} (${s[k]?.count ?? 0})`} icon={i} color={c} loading={stats.loading} value={money(s[k]?.amount ?? 0)} /></div>)}
@@ -52,7 +52,7 @@ export default function PaymentsPage() {
           <SearchInput className="flex-grow-1" value={q} onChange={(v) => { setQ(v); setPage(1); }} placeholder="Search reference, email, payer…" />
           <Select className="mb-0" value={f.status} onChange={(e) => set({ status: e.target.value })}><option value="">All statuses</option>{PAYMENT_STATUSES.map((x) => <option key={x} value={x}>{titleCase(x)}</option>)}</Select>
           <Select className="mb-0" value={f.purpose} onChange={(e) => set({ purpose: e.target.value })}><option value="">All purposes</option><option value="order">Order</option><option value="direct">Direct</option></Select>
-          <Select className="mb-0" value={f.provider} onChange={(e) => set({ provider: e.target.value })}><option value="">All providers</option><option value="paystack">Paystack</option><option value="manual">Manual</option></Select>
+          <Select className="mb-0" value={f.provider} onChange={(e) => set({ provider: e.target.value })}><option value="">All providers</option><option value="paystack">Paystack</option><option value="flutterwave">Flutterwave</option><option value="manual">Manual</option></Select>
           <input type="date" className="form-control w-auto" value={f.from} onChange={(e) => set({ from: e.target.value })} aria-label="From" />
           <input type="date" className="form-control w-auto" value={f.to} onChange={(e) => set({ to: e.target.value })} aria-label="To" />
         </FilterBar>

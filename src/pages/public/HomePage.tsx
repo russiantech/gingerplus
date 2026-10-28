@@ -35,12 +35,13 @@ export default function HomePage() {
     <>
       <HeroSlider />
       <section className="section"><div className="container">
-        <div className="text-center mb-5"><div className="section-eyebrow">{settings.brand.taglines[0] ?? "Bold Ginger. Three Powerful Blends."}</div><h2 className="section-title display-font">Choose your blend</h2></div>
+        <div className="text-center mb-5"><div className="section-eyebrow">{settings.brand.taglines?.[0] ?? "Bold Ginger. Three Powerful Blends."}</div><h2 className="section-title display-font">Choose your blend</h2></div>
         <div className="row g-4">{FLAVORS.map((f) => (
-          <div key={f.key} className="col-md-4"><div className="flavor-card" style={{ background: `linear-gradient(145deg, ${f.color}, ${f.color}dd)` }}>
-            <h3 className="display-font fw-bold">{f.name}</h3><p className="pe-5 me-4 opacity-90" style={{ minHeight: 120 }}>{f.text}</p>
-            <div className="d-flex flex-wrap gap-2 pb-3" style={{ maxWidth: "65%" }}>
-              <Link to={shopLink(f.key, "350ml")} className="btn btn-light btn-sm btn-pill fw-semibold">Shop 350ml</Link><Link to={shopLink(f.key, "125ml")} className="btn btn-light btn-sm btn-pill fw-semibold">Shop 125ml</Link></div>
+          <div key={f.key} className="col-md-4"><div className="flavor-card" style={{ ["--c" as string]: f.color }}>
+            <span className="tag">{f.name}</span>
+            <h3 className="display-font h3 mt-3 mb-2">Ginger Plus<br />with {f.name}</h3><p className="text-muted" style={{ minHeight: 110, fontSize: ".9rem", maxWidth: "64%" }}>{f.text}</p>
+            <div className="d-flex flex-wrap gap-2 pb-2" style={{ maxWidth: "62%" }}>
+              <Link to={shopLink(f.key, "350ml")} className="btn btn-dark btn-sm">Shop 350ml</Link><Link to={shopLink(f.key, "125ml")} className="btn btn-light btn-sm">Shop 125ml</Link></div>
             <img src={`/images/products/${f.key}-350ml.svg`} alt="" /></div></div>))}</div>
       </div></section>
 

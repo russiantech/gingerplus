@@ -1,6 +1,6 @@
 html { scroll-behavior: smooth; }
-body { font-family: var(--sr-font-body); -webkit-font-smoothing: antialiased; }
-h1, h2, h3, .display-font { font-family: var(--sr-font-display); letter-spacing: -0.01em; }
+body { font-family: var(--sr-font-body); -webkit-font-smoothing: antialiased; background: var(--sr-canvas); }
+h1, h2, h3, .display-font { font-family: var(--sr-font-display); letter-spacing: -0.025em; font-weight: 700; }
 img { max-width: 100%; }
 .min-vh-60 { min-height: 60vh; }
 .cursor-pointer { cursor: pointer; }
@@ -9,8 +9,22 @@ img { max-width: 100%; }
 .object-fit-contain { object-fit: contain; }
 .rounded-xl { border-radius: var(--sr-radius) !important; }
 .shadow-soft { box-shadow: var(--sr-shadow) !important; }
-.card { --bs-card-border-radius: var(--sr-radius); --bs-card-inner-border-radius: var(--sr-radius); }
-.skeleton { background: linear-gradient(90deg, rgba(173,136,77,.12) 25%, rgba(173,136,77,.22) 50%, rgba(173,136,77,.12) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; border-radius: 8px; }
+.skeleton { background: linear-gradient(90deg, rgba(150,130,100,.1) 25%, rgba(150,130,100,.2) 50%, rgba(150,130,100,.1) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; border-radius: 12px; }
 @keyframes sk { to { background-position: -200% 0; } }
 .spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }
 :focus-visible { outline: 2px solid var(--sr-gold); outline-offset: 2px; }
+.empty-icon { width: 72px; height: 72px; border-radius: 24px; background: var(--sr-gold-100); color: var(--sr-brown-700); display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; }
+/* soft icon tile used across the site (rounded square, tinted) */
+.soft-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--sr-gold-100); color: var(--sr-brown-700); display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.circle-btn { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--sr-dark); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; transition: transform .15s, background .15s; text-decoration: none; flex-shrink: 0; }
+.circle-btn:hover { background: var(--sr-gold); color: #3a2f22; transform: scale(1.06); }
+.circle-btn.light { background: var(--sr-surface); color: var(--sr-ink); box-shadow: var(--sr-shadow); } .circle-btn.light:hover { background: var(--sr-gold-100); color: var(--sr-ink); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+.avatar-circle { width: 46px; height: 46px; border-radius: 50%; background: var(--sr-gold); color: #2e2010; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; text-transform: uppercase; }
+.avatar-circle.sm { width: 34px; height: 34px; font-size: .8rem; }
+
+/* icons inside links/buttons must never pick up the link underline */
+a i[class^="ri-"], a i[class*=" ri-"], button i[class^="ri-"], button i[class*=" ri-"] { display: inline-block; text-decoration: none !important; }
+a:hover, a:focus { text-decoration: none; }
+a.fw-semibold:hover, p a:hover, .fs-sm a:hover { text-decoration: underline; }
+.offline-banner { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 3000; background: var(--sr-dark); color: #fff; padding: .55rem 1rem; border-radius: 999px; font-size: .85rem; box-shadow: var(--sr-shadow-lg, 0 10px 30px rgba(0,0,0,.2)); max-width: calc(100vw - 24px); }

@@ -92,7 +92,7 @@ export default function OrderCreatePage() {
         <div className="col-xl-4"><div className="position-sticky" style={{ top: 86 }}>
           <Panel title="4 · Payment & summary">
             <Select label="Channel" value={opts.channel} onChange={(e) => setOpts({ ...opts, channel: e.target.value })}>{CHANNELS.filter((c) => c !== "web").map((c) => <option key={c} value={c}>{titleCase(c)}</option>)}</Select>
-            <Select label="Payment method" value={opts.method} onChange={(e) => setOpts({ ...opts, method: e.target.value })}><option value="bank_transfer">Bank transfer</option><option value="paystack">Paystack (send link)</option><option value="cash">Cash</option><option value="whatsapp">WhatsApp / invoice</option></Select>
+            <Select label="Payment method" value={opts.method} onChange={(e) => setOpts({ ...opts, method: e.target.value })}><option value="bank_transfer">Bank transfer</option><option value="paystack">Online (customer pays from their order link)</option><option value="cash">Cash</option><option value="whatsapp">WhatsApp / invoice</option></Select>
             <div className="row"><Input className="col-6" label="Coupon" value={opts.coupon} onChange={(e) => setOpts({ ...opts, coupon: e.target.value })} /><Input className="col-6" label="Delivery fee override" type="number" min={0} value={opts.fee} onChange={(e) => setOpts({ ...opts, fee: e.target.value })} /></div>
             <Textarea label="Order note" rows={2} value={opts.notes} onChange={(e) => setOpts({ ...opts, notes: e.target.value })} />
             <Switch label="Mark as paid" hint="Records a manual payment for the full total" checked={opts.paid} onChange={(v) => setOpts({ ...opts, paid: v })} />

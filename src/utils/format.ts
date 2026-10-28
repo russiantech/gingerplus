@@ -15,6 +15,6 @@ export const timeAgo = (iso: string) => {
 };
 export const pct = (cur: number, prev: number) => (prev ? Math.round(((cur - prev) / prev) * 100) : cur ? 100 : 0);
 export const titleCase = (s: string) => s.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-export const initials = (name: string) => name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
+export const initials = (name: string) => (name ?? "").split(" ").map((p) => p?.[0] ?? "").slice(0, 2).join("").toUpperCase();
 export const waLink = (num: string, text = "") => `https://wa.me/${num.replace(/\D/g, "")}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 export const assetUrl = (u?: string | null) => (!u ? "" : u.startsWith("http") || u.startsWith("/images") ? u : (import.meta.env.VITE_API_URL ?? "") + u);

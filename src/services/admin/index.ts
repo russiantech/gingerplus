@@ -1,6 +1,6 @@
 import type { AdminOrder, Application, Category, ContactMessage, CustomerListItem, DashboardData, EmailMessage, Paginated, Payment, Product, ProductInput,
   Promotion, PromotionInput, Role, ShippingRate, Store, StoreInput, Subscriber, TrafficData, User, HeroSlide, CmsPage, BlogPost, Recipe, Testimonial, Faq,
-  Address, Order, StorePublic, SiteSettings } from "@/types";
+  Address, Order, StorePublic, SiteSettings, PaymentProviderInfo, ProviderUpdate, ProviderTestResult } from "@/types";
 import { api } from "../http";
 
 type Q = Record<string, string | number | boolean | null | undefined>;
@@ -48,6 +48,13 @@ export const adminApi = {
     confirmManually: (id: string, note?: string) => api.post<Payment>(`/admin/payments/${id}/confirm-manually`, { note }),
   },
 
+  paymentProviders: {
+    list: () => api.get<PaymentProviderInfo[]>("/admin/payment-providers"),
+    update: (provider: string, d: ProviderUpdate) => api.put<PaymentProviderInfo>(`/admin/payment-providers/${provider}`, d),
+    makeDefault: (provider: string) => api.post<PaymentProviderInfo>(`/admin/payment-providers/${provider}/default`),
+    test: (provider: string) => api.post<ProviderTestResult>(`/admin/payment-providers/${provider}/test`),
+    remove: (provider: string) => api.del<{ detail: string }>(`/admin/payment-providers/${provider}`),
+  },
   customers: {
     list: (q?: Q) => api.get<Paginated<CustomerListItem>>("/admin/customers", q),
     get: (id: string) => api.get<{ customer: CustomerListItem; addresses: Address[]; orders: Order[]; linked_store: StorePublic | null }>(`/admin/customers/${id}`),

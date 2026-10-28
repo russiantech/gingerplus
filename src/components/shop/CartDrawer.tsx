@@ -55,7 +55,7 @@ export default function CartDrawer() {
               </div>
               {count >= max && (
                 <div className="alert alert-warning fs-sm mt-3 mb-0 py-2"><i className="ri-store-2-line me-1" />Wholesale quantity — you can order online or via{" "}
-                  <a href={waLink(settings.contact.whatsapp_numbers[0] ?? "", "Hello Southern Rose, I'd like a wholesale quote.")} target="_blank" rel="noreferrer" className="fw-semibold">WhatsApp</a>.</div>
+                  <a href={waLink(settings.contact.whatsapp_numbers?.[0] ?? "", "Hello Southern Rose, I'd like a wholesale quote.")} target="_blank" rel="noreferrer" className="fw-semibold">WhatsApp</a>.</div>
               )}
             </>
           )}

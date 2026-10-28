@@ -24,7 +24,7 @@ export default function ShopPage() {
         <div className="d-flex flex-wrap gap-4 mb-4 align-items-center">
           <div className="d-flex flex-wrap gap-2 align-items-center"><span className="fs-sm fw-semibold text-muted">Flavour</span>
             <Pill active={!flavor} onClick={() => setFlavor("")}>All</Pill>
-            {Object.keys(FLAVOR_COLOR).map((f) => <Pill key={f} active={flavor === f} onClick={() => setFlavor(f)}><span className="d-inline-block rounded-circle me-1" style={{ width: 8, height: 8, background: FLAVOR_COLOR[f] }} />{f[0].toUpperCase() + f.slice(1)}</Pill>)}</div>
+            {Object.keys(FLAVOR_COLOR).map((f) => <Pill key={f} active={flavor === f} onClick={() => setFlavor(f)}><span className="d-inline-block rounded-circle me-1" style={{ width: 8, height: 8, background: FLAVOR_COLOR[f] }} />{f.charAt(0).toUpperCase() + f.slice(1)}</Pill>)}</div>
           <div className="d-flex flex-wrap gap-2 align-items-center"><span className="fs-sm fw-semibold text-muted">Size</span>
             <Pill active={!size} onClick={() => setSize("")}>All</Pill><Pill active={size === "350ml"} onClick={() => setSize("350ml")}>350ml · 24</Pill><Pill active={size === "125ml"} onClick={() => setSize("125ml")}>125ml · 20</Pill></div>
           {(cats.data?.length ?? 0) > 1 && <div className="d-flex flex-wrap gap-2 align-items-center"><span className="fs-sm fw-semibold text-muted">Category</span>

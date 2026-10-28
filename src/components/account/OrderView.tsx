@@ -6,7 +6,7 @@ import { ApiError } from "@/services/http";
 import { shopService } from "@/services/shop";
 import type { Order } from "@/types";
 import { dateTime, money, titleCase, waLink } from "@/utils/format";
-import { goToGateway } from "@/utils/gateway";
+import { usePayment } from "@/components/payments/PaymentProvider";
 
 const LABEL: Record<string, string> = { pending: "Order placed", confirmed: "Confirmed", processing: "Being prepared", dispatched: "On its way", delivered: "Delivered", completed: "Completed", cancelled: "Cancelled", refunded: "Refunded", store_assigned: "Dealer assigned", partial_payment: "Part payment received" };
 
@@ -21,15 +21,17 @@ export function OrderTimeline({ order }: { order: Order }) {
 }
 
 /** Full order detail card set — shared by public tracking and the account area. */
-export default function OrderView({ order, actions }: { order: Order; actions?: React.ReactNode }) {
-  const toast = useToast();
+export default function OrderView({ order, actions, onChanged }: { order: Order; actions?: React.ReactNode; onChanged?: () => void }) {
+  const toast = useToast(); const { pay: openPayment } = usePayment();
   const [busy, setBusy] = useState(false);
   const addr = order.shipping_address as Record<string, string>;
   const payable = !["paid", "refunded"].includes(order.payment_status) && !["cancelled", "refunded"].includes(order.status) && order.payment_method !== "whatsapp";
   const pay = async () => {
     setBusy(true);
-    try { goToGateway((await shopService.payOrder(order.number, order.customer_email)).authorization_url); }
-    catch (e) { toast.error(e instanceof ApiError ? e.message : "Could not start payment"); setBusy(false); }
+    try {
+      const out = await openPayment(await shopService.payOrder(order.number, order.customer_email));
+      if (out.status === "paid") { toast.success("Payment received — thank you!"); onChanged?.(); }
+    } catch (e) { toast.error(e instanceof ApiError ? e.message : "Could not start payment"); } finally { setBusy(false); }
   };
   const store = order.assigned_store;
   return (

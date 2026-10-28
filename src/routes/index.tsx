@@ -48,7 +48,7 @@ const adminPages = {
   Products: A("ProductsPage"), ProductEdit: A("ProductEditPage"), Categories: A("CategoriesPage"), Promotions: A("PromotionsPage"),
   Stores: A("StoresPage"), Applications: A("ApplicationsPage"), Inbox: A("InboxPage"), Contacts: A("ContactsPage"), Subscribers: A("SubscribersPage"),
   Hero: A("HeroSlidesPage"), Pages: A("PagesPage"), PageEdit: A("PageEditPage"), Blog: A("BlogAdminPage"), Recipes: A("RecipesAdminPage"),
-  Testimonials: A("TestimonialsAdminPage"), Faqs: A("FaqsAdminPage"), Users: A("UsersPage"), Roles: A("RolesPage"), Settings: A("SettingsPage"),
+  Testimonials: A("TestimonialsAdminPage"), Faqs: A("FaqsAdminPage"), Users: A("UsersPage"), Roles: A("RolesPage"), Settings: A("SettingsPage"), PaymentSettings: A("PaymentSettingsPage"),
 };
 
 export default function AppRoutes() {
@@ -107,7 +107,7 @@ export default function AppRoutes() {
             <Route path="content/hero" element={<X.Hero />} /><Route path="content/pages" element={<X.Pages />} /><Route path="content/pages/:id" element={<X.PageEdit />} />
             <Route path="content/blog" element={<X.Blog />} /><Route path="content/recipes" element={<X.Recipes />} /><Route path="content/testimonials" element={<X.Testimonials />} /><Route path="content/faqs" element={<X.Faqs />} /></Route>
           <Route element={<RequireStaff perm="users:manage" />}><Route path="users" element={<X.Users />} /><Route path="roles" element={<X.Roles />} /></Route>
-          <Route element={<RequireStaff perm="settings:manage" />}><Route path="settings" element={<X.Settings />} /></Route>
+          <Route element={<RequireStaff perm="settings:manage" />}><Route path="settings" element={<X.Settings />} /><Route path="payment-settings" element={<X.PaymentSettings />} /></Route>
         </Route></Route>
       </Routes>
     </Suspense>

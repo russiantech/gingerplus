@@ -29,14 +29,14 @@ export default function SettingsPage() {
         <div className="col-lg-9"><Panel>
           {tab === "commerce" && <>
             <h6 className="fw-bold">Online payment vs wholesale</h6>
-            <div className="row g-0 gx-3"><div className="col-md-6">{num("online_payment_max_packs", "Pay-online limit (packs)", "Orders with fewer packs go straight to Paystack. At or above this they are treated as wholesale (WhatsApp first).")}</div>
+            <div className="row g-0 gx-3"><div className="col-md-6">{num("online_payment_max_packs", "Pay-online limit (packs)", "Orders with fewer packs go straight to online payment. At or above this they are treated as wholesale (WhatsApp first).")}</div>
               <div className="col-md-6">{num("wholesale_min_packs", "Wholesale minimum (packs)", "Shown on the wholesale page.")}</div></div>
             <Switch label="Allow full online payment for wholesale orders" hint="Lets bulk buyers pay online instead of only WhatsApp / bank transfer." checked={!!g.allow_online_wholesale} onChange={(x) => set("allow_online_wholesale", x)} />
             <h6 className="fw-bold mt-4">Store matching</h6>
             <Switch label="Auto-suggest the closest store for new orders" hint="The system locates the buyer (state / coordinates) and proposes a store. Nothing is assigned until an admin approves it on the order." checked={!!g.auto_suggest_store} onChange={(x) => set("auto_suggest_store", x)} />
             <h6 className="fw-bold mt-4">Delivery & payment</h6>
             <div className="row g-0 gx-3"><div className="col-md-6">{num("default_delivery_fee", "Default delivery fee (₦)", "Used when a state has no specific rate.")}</div><div className="col-md-6">{num("free_delivery_over", "Free delivery over (₦)", "Leave empty to disable.")}</div></div>
-            <Textarea label="Bank transfer details" rows={3} value={g.bank_details ?? ""} hint="Shown to customers who choose bank transfer (never on public pages)." onChange={(e) => set("bank_details", e.target.value)} />
+            <Textarea label="Legacy bank transfer note" rows={3} value={g.bank_details ?? ""} hint="Prefer structured bank details under Payment settings. This is only a fallback note." onChange={(e) => set("bank_details", e.target.value)} />
           </>}
           {tab === "contact" && <><div className="row g-0 gx-3"><div className="col-md-6">{txt("email", "Contact email")}</div><div className="col-md-6">{txt("press_email", "Press email")}</div><div className="col-md-6">{txt("phone", "Phone")}</div><div className="col-md-6">{txt("phone_hours", "Phone hours")}</div></div>
             <Input label="WhatsApp numbers" hint="Comma separated, international format" value={(g.whatsapp_numbers ?? []).join(", ")} onChange={(e) => set("whatsapp_numbers", e.target.value.split(",").map((s) => s.trim()).filter(Boolean))} />{txt("address", "Address")}{txt("maps_url", "Google Maps link")}</>}

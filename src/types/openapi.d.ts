@@ -441,6 +441,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/payments/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Payment Config
+         * @description Public: is online payment available (and via which provider), plus bank-transfer details if the admin enabled them.
+         */
+        get: operations["payment_config_api_v1_payments_config_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/payments/direct": {
         parameters: {
             query?: never;
@@ -461,6 +481,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/payments/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify Post
+         * @description Called by the browser right after the popup reports success: the backend asks the provider and settles (idempotent).
+         */
+        post: operations["verify_post_api_v1_payments_verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/payments/verify/{reference}": {
         parameters: {
             query?: never;
@@ -470,7 +510,7 @@ export interface paths {
         };
         /**
          * Verify
-         * @description Called by the callback page. Verifies with Paystack and settles (idempotent).
+         * @description Same as POST /verify — used by the fallback callback page.
          */
         get: operations["verify_api_v1_payments_verify__reference__get"];
         put?: never;
@@ -481,7 +521,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/payments/webhook/paystack": {
+    "/api/v1/payments/mock/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -490,8 +530,31 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Paystack Webhook */
-        post: operations["paystack_webhook_api_v1_payments_webhook_paystack_post"];
+        /**
+         * Mock Complete
+         * @description Development only: lets the in-app test popup 'pay'. 404 in production.
+         */
+        post: operations["mock_complete_api_v1_payments_mock_complete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/webhook/{provider}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Webhook
+         * @description Provider → backend notifications. The signature is checked with the credentials in use (database first, then env).
+         */
+        post: operations["webhook_api_v1_payments_webhook__provider__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1258,6 +1321,81 @@ export interface paths {
          * @description Force-confirm (e.g. bank transfer seen in the bank app). Always leaves an audit note.
          */
         post: operations["confirm_manually_api_v1_admin_payments__payment_id__confirm_manually_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/payment-providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Providers
+         * @description Masked view only — secrets are never returned. `source` says where the live credentials come from.
+         */
+        get: operations["list_providers_api_v1_admin_payment_providers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/payment-providers/{provider}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Provider */
+        put: operations["update_provider_api_v1_admin_payment_providers__provider__put"];
+        post?: never;
+        /**
+         * Remove Provider
+         * @description Delete the saved configuration → the provider falls back to environment variables (if any).
+         */
+        delete: operations["remove_provider_api_v1_admin_payment_providers__provider__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/payment-providers/{provider}/default": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Make Default */
+        post: operations["make_default_api_v1_admin_payment_providers__provider__default_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/payment-providers/{provider}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Test Provider */
+        post: operations["test_provider_api_v1_admin_payment_providers__provider__test_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2327,6 +2465,29 @@ export interface components {
             tokens: components["schemas"]["TokenPair"];
             user: components["schemas"]["UserOut"];
         };
+        /** BankDetails */
+        BankDetails: {
+            /**
+             * Bank Name
+             * @default
+             */
+            bank_name: string;
+            /**
+             * Account Name
+             * @default
+             */
+            account_name: string;
+            /**
+             * Account Number
+             * @default
+             */
+            account_number: string;
+            /**
+             * Instructions
+             * @default
+             */
+            instructions: string;
+        };
         /** BlogIn */
         BlogIn: {
             /** Title */
@@ -2524,6 +2685,7 @@ export interface components {
             authorization_url?: string | null;
             /** Payment Reference */
             payment_reference?: string | null;
+            payment?: components["schemas"]["InitPaymentResponse"] | null;
             /** Whatsapp Url */
             whatsapp_url?: string | null;
             /** Next Step */
@@ -2941,16 +3103,41 @@ export interface components {
             /** In Reply To Thread */
             in_reply_to_thread?: string | null;
         };
-        /** InitPaymentResponse */
+        /**
+         * InitPaymentResponse
+         * @description Everything the browser needs to open the provider's in-page popup. Secrets never appear here (public key only).
+         */
         InitPaymentResponse: {
             /** Reference */
             reference: string;
+            /** Provider */
+            provider: string;
             /** Authorization Url */
-            authorization_url: string;
+            authorization_url?: string | null;
             /** Access Code */
             access_code?: string | null;
+            /** Public Key */
+            public_key?: string | null;
+            /**
+             * Mock
+             * @default false
+             */
+            mock: boolean;
             /** Amount */
             amount: number;
+            /**
+             * Currency
+             * @default NGN
+             */
+            currency: string;
+            /** Email */
+            email?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Description */
+            description?: string | null;
         };
         /** LoginRequest */
         LoginRequest: {
@@ -2991,6 +3178,16 @@ export interface components {
             /** Detail */
             detail: string;
         };
+        /** MockCompleteRequest */
+        MockCompleteRequest: {
+            /** Reference */
+            reference: string;
+            /**
+             * Outcome
+             * @default success
+             */
+            outcome: string;
+        };
         /** NewsletterIn */
         NewsletterIn: {
             /**
@@ -3000,6 +3197,18 @@ export interface components {
             email: string;
             /** Name */
             name?: string | null;
+        };
+        /** OnlineConfig */
+        OnlineConfig: {
+            /** Available */
+            available: boolean;
+            /** Provider */
+            provider?: string | null;
+            /**
+             * Mock
+             * @default false
+             */
+            mock: boolean;
         };
         /**
          * OrderChannel
@@ -3334,6 +3543,11 @@ export interface components {
             /** Pages */
             pages: number;
         };
+        /** PaymentConfigOut */
+        PaymentConfigOut: {
+            online: components["schemas"]["OnlineConfig"];
+            bank_transfer?: components["schemas"]["BankDetails"] | null;
+        };
         /**
          * PaymentMethod
          * @enum {string}
@@ -3388,7 +3602,7 @@ export interface components {
          * PaymentProvider
          * @enum {string}
          */
-        PaymentProvider: "paystack" | "manual";
+        PaymentProvider: "paystack" | "flutterwave" | "mock" | "manual";
         /** PaymentPublicStatus */
         PaymentPublicStatus: {
             /** Reference */
@@ -3400,6 +3614,8 @@ export interface components {
             order_number?: string | null;
             /** Paid At */
             paid_at?: string | null;
+            /** Message */
+            message?: string | null;
         };
         /**
          * PaymentPurpose
@@ -3743,6 +3959,82 @@ export interface components {
             show_banner?: boolean | null;
             /** Is Active */
             is_active?: boolean | null;
+        };
+        /** ProviderOut */
+        ProviderOut: {
+            /** Provider */
+            provider: string;
+            /** Display Name */
+            display_name: string;
+            /** Kind */
+            kind: string;
+            /** Blurb */
+            blurb: string;
+            /** Is Enabled */
+            is_enabled: boolean;
+            /** Is Default */
+            is_default: boolean;
+            /** Mode */
+            mode: string;
+            /** Public Key */
+            public_key?: string | null;
+            /** Has Secret */
+            has_secret: boolean;
+            /** Secret Masked */
+            secret_masked?: string | null;
+            /** Secret Fingerprint */
+            secret_fingerprint?: string | null;
+            /** Has Webhook Secret */
+            has_webhook_secret: boolean;
+            /**
+             * Needs Reentry
+             * @default false
+             */
+            needs_reentry: boolean;
+            /**
+             * Extra
+             * @default {}
+             */
+            extra: Record<string, never>;
+            /** Env Available */
+            env_available: boolean;
+            /** Source */
+            source: string;
+            /** Active */
+            active: boolean;
+            /** Webhook Url */
+            webhook_url?: string | null;
+            /** Updated At */
+            updated_at?: string | null;
+        };
+        /** ProviderUpdate */
+        ProviderUpdate: {
+            /** Display Name */
+            display_name?: string | null;
+            /** Is Enabled */
+            is_enabled?: boolean | null;
+            /** Mode */
+            mode?: string | null;
+            /** Public Key */
+            public_key?: string | null;
+            /** Secret Key */
+            secret_key?: string | null;
+            /**
+             * Clear Secret
+             * @default false
+             */
+            clear_secret: boolean;
+            /** Webhook Secret */
+            webhook_secret?: string | null;
+            /**
+             * Clear Webhook Secret
+             * @default false
+             */
+            clear_webhook_secret: boolean;
+            /** Extra */
+            extra?: {
+                [key: string]: string;
+            } | null;
         };
         /** Quote */
         Quote: {
@@ -4380,6 +4672,15 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /** TestResult */
+        TestResult: {
+            /** Ok */
+            ok: boolean;
+            /** Message */
+            message: string;
+            /** Source */
+            source: string;
+        };
         /** TestimonialIn */
         TestimonialIn: {
             /** Author Name */
@@ -4648,6 +4949,11 @@ export interface components {
             email: string;
             /** Code */
             code: string;
+        };
+        /** VerifyRequest */
+        VerifyRequest: {
+            /** Reference */
+            reference: string;
         };
     };
     responses: never;
@@ -5487,6 +5793,26 @@ export interface operations {
             };
         };
     };
+    payment_config_api_v1_payments_config_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentConfigOut"];
+                };
+            };
+        };
+    };
     direct_payment_api_v1_payments_direct_post: {
         parameters: {
             query?: never;
@@ -5507,6 +5833,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["InitPaymentResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_post_api_v1_payments_verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentPublicStatus"];
                 };
             };
             /** @description Validation Error */
@@ -5551,13 +5910,46 @@ export interface operations {
             };
         };
     };
-    paystack_webhook_api_v1_payments_webhook_paystack_post: {
+    mock_complete_api_v1_payments_mock_complete_post: {
         parameters: {
             query?: never;
-            header?: {
-                "x-paystack-signature"?: string | null;
-            };
+            header?: never;
             path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MockCompleteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Message"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    webhook_api_v1_payments_webhook__provider__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -7231,6 +7623,154 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PaymentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_providers_api_v1_admin_payment_providers_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderOut"][];
+                };
+            };
+        };
+    };
+    update_provider_api_v1_admin_payment_providers__provider__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_provider_api_v1_admin_payment_providers__provider__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Message"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    make_default_api_v1_admin_payment_providers__provider__default_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    test_provider_api_v1_admin_payment_providers__provider__test_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TestResult"];
                 };
             };
             /** @description Validation Error */

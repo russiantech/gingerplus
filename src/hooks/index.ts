@@ -33,12 +33,16 @@ export function useDocumentTitle(title?: string) {
 }
 
 /** First-party page-view tracking for the admin traffic dashboard (skips /admin). */
+let trackingDisabled = false;
 export function usePageTracking() {
   const { pathname } = useLocation();
   useEffect(() => {
-    if (pathname.startsWith("/admin") || pathname.startsWith("/partner")) return;
-    const p = new URLSearchParams(window.location.search);
-    publicService.track({ session_id: sessionId(), path: pathname, referrer: document.referrer || null, utm_source: p.get("utm_source") }).catch(() => undefined);
+    if (trackingDisabled || pathname.startsWith("/admin") || pathname.startsWith("/partner")) return;
+    try {
+      const p = new URLSearchParams(window.location.search);
+      // Analytics is best-effort: any failure (API down, 405 from a static host…) silently disables it for this session.
+      publicService.track({ session_id: sessionId(), path: pathname, referrer: document.referrer || null, utm_source: p.get("utm_source") }).catch(() => { trackingDisabled = true; });
+    } catch { trackingDisabled = true; }
   }, [pathname]);
 }
 

@@ -23,7 +23,7 @@ const MENU: { title: string; items: Item[] }[] = [
     { to: "/admin/content/hero", label: "Hero Slides", icon: "ri-slideshow-line", perm: "content:manage" }, { to: "/admin/content/pages", label: "Pages", icon: "ri-pages-line", perm: "content:manage" },
     { to: "/admin/content/blog", label: "Blog", icon: "ri-article-line", perm: "content:manage" }, { to: "/admin/content/recipes", label: "Recipes", icon: "ri-restaurant-line", perm: "content:manage" },
     { to: "/admin/content/testimonials", label: "Testimonials", icon: "ri-chat-quote-line", perm: "content:manage" }, { to: "/admin/content/faqs", label: "FAQs", icon: "ri-question-line", perm: "content:manage" }] },
-  { title: "System", items: [{ to: "/admin/users", label: "Team Members", icon: "ri-user-settings-line", perm: "users:manage" }, { to: "/admin/roles", label: "Roles & Permissions", icon: "ri-shield-keyhole-line", perm: "users:manage" }, { to: "/admin/settings", label: "Settings", icon: "ri-settings-3-line", perm: "settings:manage" }] },
+  { title: "System", items: [{ to: "/admin/users", label: "Team Members", icon: "ri-user-settings-line", perm: "users:manage" }, { to: "/admin/roles", label: "Roles & Permissions", icon: "ri-shield-keyhole-line", perm: "users:manage" }, { to: "/admin/payment-settings", label: "Payment settings", icon: "ri-secure-payment-line", perm: "settings:manage" }, { to: "/admin/settings", label: "Settings", icon: "ri-settings-3-line", perm: "settings:manage" }] },
 ];
 
 export default function AdminLayout() {
@@ -46,7 +46,7 @@ export default function AdminLayout() {
   return (
     <div className={`admin-shell ${collapsed ? "is-collapsed" : ""} ${mobile ? "is-mobile-open" : ""}`}>
       <aside className="admin-sidebar">
-        <div className="sidebar-brand"><Link to="/admin"><img src="/images/logo-light.svg" alt="Southern Rose" height={38} className="brand-full" /><img src="/favicon.svg" alt="" height={34} className="brand-mini" /></Link></div>
+        <div className="sidebar-brand"><Link to="/admin"><img src={dark ? "/images/logo-light.svg" : "/images/logo.svg"} alt="Southern Rose" height={38} className="brand-full" /><img src="/favicon.svg" alt="" height={34} className="brand-mini" /></Link></div>
         <nav className="sidebar-nav">
           {MENU.map((g) => {
             const items = g.items.filter((i) => !i.perm || can(i.perm));

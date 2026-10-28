@@ -38,7 +38,7 @@ export default function StoreLocatorPage() {
         <div className="col-md-7 d-flex gap-2 flex-wrap"><button className="btn btn-primary" onClick={locate} disabled={locating}>{locating ? <Spinner size="sm" className="me-2" /> : <i className="ri-crosshair-2-line me-2" />}Use my location</button>
           <button className="btn btn-outline-primary" onClick={findByState} disabled={!state || locating}>Nearest dealer in {state || "state"}</button></div></div>
       {near && <div className="mb-4"><h5 className="fw-bold">Closest to you</h5>{near.store ? <div className="row"><div className="col-md-6 col-lg-4"><Card s={near.store} /></div></div> :
-        <div className="alert alert-info">{near.reason} <a href={waLink(settings.contact.whatsapp_numbers[0] ?? "")} target="_blank" rel="noreferrer">Chat on WhatsApp</a> or <Link to="/shop">order online</Link>.</div>}</div>}
+        <div className="alert alert-info">{near.reason} <a href={waLink(settings.contact.whatsapp_numbers?.[0] ?? "")} target="_blank" rel="noreferrer">Chat on WhatsApp</a> or <Link to="/shop">order online</Link>.</div>}</div>}
       {error && <ErrorState message={error} onRetry={reload} />}
       <h5 className="fw-bold">{state ? `Stores in ${state}` : "All stores & dealers"}</h5>
       <div className="row g-4">{loading ? [0, 1, 2].map((i) => <div key={i} className="col-md-4"><Skeleton h={170} /></div>) : data?.map((s) => <div key={s.id} className="col-md-6 col-lg-4"><Card s={s} /></div>)}</div>

@@ -65,7 +65,7 @@ export default function OrderDetailPage() {
               <div className="table-responsive"><table className="table align-middle mb-0 admin-table"><thead><tr><th>Reference</th><th>Amount</th><th>Status</th><th>Channel</th><th>Date</th><th className="no-print" /></tr></thead><tbody>
                 {pays.data.map((p) => <tr key={p.id}><td className="fs-sm">{p.reference}<div className="text-muted fs-xs">{p.gateway_response}</div></td><td>{money(p.amount)}</td><td><StatusBadge status={p.status} /></td><td>{p.channel ?? p.provider}</td><td className="fs-sm text-muted">{dateTime(p.paid_at ?? p.created_at)}</td>
                   <td className="text-end no-print">{p.status !== "paid" && can("payments:confirm") && <div className="d-flex gap-1 justify-content-end">
-                    {p.provider === "paystack" && <button className="btn btn-sm btn-outline-primary" disabled={busy} onClick={() => act(() => adminApi.payments.verify(p.id), "Verification complete")}>Verify</button>}
+                    {p.provider !== "manual" && p.provider !== "mock" && <button className="btn btn-sm btn-outline-primary" disabled={busy} onClick={() => act(() => adminApi.payments.verify(p.id), "Verification complete")}>Verify</button>}
                     <button className="btn btn-sm btn-outline-secondary" onClick={() => { setCnote(""); setConfirmFor(p); }}>Confirm</button></div>}</td></tr>)}</tbody></table></div>}
           </Panel>
           <Panel title="Timeline"><div className="timeline">{[...o.history].reverse().map((h, i) => <div key={i} className="timeline-item"><div className="fw-semibold fs-sm">{titleCase(h.status)} {!h.is_public && <span className="badge badge-soft-secondary ms-1">internal</span>}</div>
