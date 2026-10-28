@@ -28,3 +28,16 @@ a i[class^="ri-"], a i[class*=" ri-"], button i[class^="ri-"], button i[class*="
 a:hover, a:focus { text-decoration: none; }
 a.fw-semibold:hover, p a:hover, .fs-sm a:hover { text-decoration: underline; }
 .offline-banner { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 3000; background: var(--sr-dark); color: #fff; padding: .55rem 1rem; border-radius: 999px; font-size: .85rem; box-shadow: var(--sr-shadow-lg, 0 10px 30px rgba(0,0,0,.2)); max-width: calc(100vw - 24px); }
+
+/* ---- loading feedback ---- */
+.top-progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 4000; pointer-events: none; opacity: 0; transition: opacity .2s; overflow: hidden; }
+.top-progress.on { opacity: 1; }
+.top-progress span { position: absolute; top: 0; bottom: 0; width: 35%; border-radius: 3px; background: var(--sr-gold); animation: sr-slide 1.1s ease-in-out infinite; }
+@keyframes sr-slide { 0% { left: -35%; } 100% { left: 100%; } }
+.btn[data-loading] { position: relative; pointer-events: none; opacity: .85; }
+.btn[data-loading]:not(:has(.spinner-border))::before { content: ""; display: inline-block; width: .95em; height: .95em; margin-right: .5rem; vertical-align: -.12em; border: .16em solid currentColor; border-right-color: transparent; border-radius: 50%; animation: sr-spin .7s linear infinite; }
+.btn.btn-sm[data-loading]:not(:has(.spinner-border))::before { width: .85em; height: .85em; }
+.circle-btn[data-loading] { font-size: 0; } .circle-btn[data-loading]::before { margin: 0; width: 1.05rem; height: 1.05rem; font-size: 1rem; }
+@keyframes sr-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .top-progress span, .btn[data-loading]::before { animation-duration: 2s; } }
+.btn .spinner-border { color: currentColor !important; }

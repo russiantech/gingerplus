@@ -53,7 +53,7 @@ export default function ProductDetailPage() {
               <div className="fw-bold">{v.size_label}</div><div className="fs-xs text-muted">Pack of {v.unit_count} · <Money value={unitPrice(v)} /></div></button>)}</div></div>
           <div className="d-flex gap-3 align-items-center flex-wrap mb-3"><QtyStepper value={qty} onChange={setQty} />
             <button className="btn btn-primary btn-lg px-4 flex-grow-1" disabled={!variant.in_stock} onClick={() => { add(p, variant, qty); toast.success("Added to cart"); }}>
-              <i className="ri-shopping-bag-3-line me-2" />{variant.in_stock ? `Add to Cart · ₦${(shown * qty).toLocaleString()}` : "Out of stock"}</button></div>
+              <i className="ri-shopping-basket-2-line me-2" />{variant.in_stock ? `Add to Cart · ₦${(shown * qty).toLocaleString()}` : "Out of stock"}</button></div>
           <a href={wa} target="_blank" rel="noreferrer" className="btn btn-outline-primary w-100 mb-3"><i className="ri-whatsapp-line me-2" />Buy Wholesale on WhatsApp</a>
           {wholesale && <div className="alert alert-warning fs-sm"><i className="ri-information-line me-1" />{packs}+ packs counts as a wholesale order — you can still pay online, or complete it on WhatsApp.</div>}
           <div className="bg-cream rounded-xl p-3 fs-sm"><div className="fw-semibold mb-1">Order options</div>Single bottle (sample on request) · 12-pack · 24-pack (standard) · Wholesale (20+ packs). Pay online for orders under {settings.commerce.online_payment_max_packs} packs.

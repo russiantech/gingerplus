@@ -32,7 +32,7 @@ export default function MobileMenu({ open, onClose, primary, more, account, cart
         <div className="menu-grid">
           {primary.map(tile)}
           {tile(account)}
-          <button className="menu-tile" onClick={() => { onClose(); onCart(); }}><span className="ic" style={{ ["--tint" as string]: "#fdf0cf" }}><i className="ri-shopping-bag-3-line" /></span>Cart{cartCount > 0 && <span className="count">{cartCount}</span>}</button>
+          <button className="menu-tile" onClick={() => { onClose(); onCart(); }}><span className="ic" style={{ ["--tint" as string]: "#fdf0cf" }}><i className="ri-shopping-basket-2-line" /></span>Cart{cartCount > 0 && <span className="count">{cartCount}</span>}</button>
         </div>
         <div className="menu-label">Explore</div>
         <div className="menu-grid">{more.map(tile)}</div>

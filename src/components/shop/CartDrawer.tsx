@@ -25,13 +25,13 @@ export default function CartDrawer() {
       <div className="offcanvas-backdrop fade show" style={{ zIndex: 1075 }} onClick={() => setOpen(false)} />
       <aside className="offcanvas offcanvas-end show cart-drawer" style={{ zIndex: 1080 }} role="dialog" aria-label="Shopping cart">
         <div className="offcanvas-header border-bottom">
-          <h5 className="offcanvas-title fw-bold"><i className="ri-shopping-bag-3-line me-2 text-gold" />Your cart <span className="text-muted fs-6">({count})</span></h5>
+          <h5 className="offcanvas-title fw-bold"><i className="ri-shopping-basket-2-line me-2 text-gold" />Your cart <span className="text-muted fs-6">({count})</span></h5>
           <button className="btn-close" onClick={() => setOpen(false)} aria-label="Close" />
         </div>
         <div className="offcanvas-body d-flex flex-column">
           {lines.length === 0 ? (
             <div className="text-center my-auto py-5">
-              <i className="ri-shopping-basket-line display-3 text-brown opacity-50" />
+              <i className="ri-shopping-basket-2-line display-3 text-brown opacity-50" />
               <h6 className="mt-3">Your cart is empty</h6><p className="text-muted fs-sm">Three bold blends are waiting for you.</p>
               <Link to="/shop" className="btn btn-primary btn-pill">Shop Ginger Plus</Link>
             </div>

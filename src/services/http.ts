@@ -44,7 +44,17 @@ if (typeof window !== "undefined") { window.addEventListener("offline", () => se
 type Query = Record<string, string | number | boolean | null | undefined>;
 export interface ReqOptions { method?: string; body?: unknown; query?: Query; auth?: boolean; signal?: AbortSignal; form?: FormData }
 
+// ---- in-flight tracking (drives the top progress bar and automatic button spinners) ----
+let inflight = 0; const flightSubs = new Set<(n: number) => void>();
+const bump = (d: number) => { inflight += d; flightSubs.forEach((f) => f(inflight)); };
+export const activity = { get: () => inflight, subscribe: (f: (n: number) => void) => { flightSubs.add(f); return () => { flightSubs.delete(f); }; } };
+
 export async function request<T>(path: string, opts: ReqOptions = {}, retried = false): Promise<T> {
+  bump(1);
+  try { return await requestInner<T>(path, opts, retried); } finally { bump(-1); }
+}
+
+async function requestInner<T>(path: string, opts: ReqOptions, retried: boolean): Promise<T> {
   const qs = new URLSearchParams();
   Object.entries(opts.query ?? {}).forEach(([k, v]) => v !== undefined && v !== null && v !== "" && qs.set(k, String(v)));
   const url = BASE + path + (qs.toString() ? `?${qs}` : "");
@@ -73,7 +83,7 @@ export async function request<T>(path: string, opts: ReqOptions = {}, retried = 
     throw new ApiError(res?.status ?? 0, "network", res ? "Our service is temporarily unavailable. Please try again shortly." : "You appear to be offline. Check your connection and try again.");
   }
   setOffline(false);
-  if (res.status === 401 && tok && !retried && opts.auth !== false && (await refresh())) return request<T>(path, opts, true);
+  if (res.status === 401 && tok && !retried && opts.auth !== false && (await refresh())) return requestInner<T>(path, opts, true);
   if (res.status === 204) return undefined as T;
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {

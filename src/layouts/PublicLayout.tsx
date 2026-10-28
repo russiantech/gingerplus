@@ -1,3 +1,4 @@
+import DotsIcon from "@/components/common/DotsIcon";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import CartDrawer from "@/components/shop/CartDrawer";
@@ -59,7 +60,7 @@ export default function PublicLayout() {
       </div>
       <header className="site-header">
         <div className="container"><div className="dock">
-          <button className="dock-menu-btn d-lg-none" aria-label="Open menu" onClick={() => setMobile(true)}><i className="ri-layout-grid-line" /></button>
+          <button className="dock-menu-btn d-lg-none" aria-label="Open menu" onClick={() => setMobile(true)}><DotsIcon /></button>
           <Link to="/" className="me-lg-3 mx-auto mx-lg-0" aria-label="Southern Rose home"><img src="/images/logo.svg" alt="Southern Rose Ginger Plus" className="logo-img" /></Link>
           <nav className="d-none d-lg-flex gap-1 flex-grow-1 align-items-center justify-content-center">
             {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.end} className="nav-item-link">{n.label}</NavLink>)}
@@ -69,7 +70,7 @@ export default function PublicLayout() {
           </nav>
           <div className="d-flex align-items-center gap-2 ms-lg-0">
             <Link to={home} className="dock-btn d-none d-md-inline-flex"><i className="ri-user-smile-line" />{user ? user.first_name : "Sign in"}</Link>
-            <button className="cart-btn" onClick={() => setOpen(true)} aria-label="Open cart"><span className="d-none d-sm-inline">Cart</span><span className="bag"><i className="ri-shopping-bag-3-line" />{count > 0 && <span className="count">{count}</span>}</span></button>
+            <button className="cart-btn" onClick={() => setOpen(true)} aria-label="Open cart"><span className="d-none d-sm-inline">Cart</span><span className="bag"><i className="ri-shopping-basket-2-line" />{count > 0 && <span className="count">{count}</span>}</span></button>
           </div>
         </div></div>
       </header>
