@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/common/BrandLogo";
 import { useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
@@ -26,7 +27,7 @@ export default function MobileMenu({ open, onClose, primary, more, account, cart
       <div className="menu-panel">
         <div className="menu-grip" />
         <div className="d-flex align-items-center justify-content-between mb-3 px-1">
-          <img src="/images/logo.svg" alt="Southern Rose" height={36} />
+          <BrandLogo size={38} />
           <button className="circle-btn light" onClick={onClose} aria-label="Close menu"><i className="ri-close-line" /></button>
         </div>
         <div className="menu-grid">

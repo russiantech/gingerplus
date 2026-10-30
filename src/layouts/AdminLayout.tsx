@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/common/BrandLogo";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Dropdown } from "@/components/common";
@@ -46,7 +47,7 @@ export default function AdminLayout() {
   return (
     <div className={`admin-shell ${collapsed ? "is-collapsed" : ""} ${mobile ? "is-mobile-open" : ""}`}>
       <aside className="admin-sidebar">
-        <div className="sidebar-brand"><Link to="/admin"><img src={dark ? "/images/logo-light.svg" : "/images/logo.svg"} alt="Southern Rose" height={38} className="brand-full" /><img src="/favicon.svg" alt="" height={34} className="brand-mini" /></Link></div>
+        <div className="sidebar-brand"><Link to="/admin"><BrandLogo size={38} className="brand-full" /><img src="/images/brand/badge-64.png" alt="" height={34} className="brand-mini" style={{ borderRadius: "50%" }} /></Link></div>
         <nav className="sidebar-nav">
           {MENU.map((g) => {
             const items = g.items.filter((i) => !i.perm || can(i.perm));

@@ -10,10 +10,11 @@ export function ImageUploader({ value, onChange, single, label = "Images" }: { v
   const ref = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [url, setUrl] = useState("");
+  const fresh = useRef(new Set<string>()); // files uploaded in this editing session (safe to delete again if discarded before saving)
   const add = (u: string) => onChange(single ? [u] : [...value, u]);
   const upload = async (files: FileList | null) => {
     if (!files?.length) return; setBusy(true);
-    try { const urls: string[] = []; for (const f of Array.from(files)) urls.push((await adminApi.media.upload(f)).url); onChange(single ? [urls[0]] : [...value, ...urls]); }
+    try { const urls: string[] = []; for (const f of Array.from(files)) { const u = (await adminApi.media.upload(f)).url; fresh.current.add(u); urls.push(u); } onChange(single ? [urls[0]] : [...value, ...urls]); }
     catch (e) { toast.error((e as Error).message); } finally { setBusy(false); if (ref.current) ref.current.value = ""; }
   };
   const move = (i: number, d: number) => { const n = [...value]; const j = i + d; if (j < 0 || j >= n.length) return; [n[i], n[j]] = [n[j], n[i]]; onChange(n); };
@@ -24,14 +25,14 @@ export function ImageUploader({ value, onChange, single, label = "Images" }: { v
         {value.map((u, i) => (
           <div className="img-tile" key={u + i}><Img src={u} alt="" />
             <div className="tile-actions">{!single && <button type="button" onClick={() => move(i, -1)} aria-label="Move left"><i className="ri-arrow-left-s-line" /></button>}
-              <button type="button" onClick={() => onChange(value.filter((_, k) => k !== i))} aria-label="Remove"><i className="ri-delete-bin-line" /></button>
+              <button type="button" onClick={() => { const u = value[i]; onChange(value.filter((_, k) => k !== i)); if (fresh.current.delete(u)) void adminApi.media.remove(u).catch(() => undefined); }} aria-label="Remove"><i className="ri-delete-bin-line" /></button>
               {!single && <button type="button" onClick={() => move(i, 1)} aria-label="Move right"><i className="ri-arrow-right-s-line" /></button>}</div></div>
         ))}
         <button type="button" className="img-tile d-flex flex-column align-items-center justify-content-center text-muted border-dashed" onClick={() => ref.current?.click()} disabled={busy} style={{ borderStyle: "dashed" }}>
           {busy ? <Spinner size="sm" /> : <><i className="ri-upload-2-line fs-4" /><span className="fs-xs">Upload</span></>}</button>
       </div>
       <input ref={ref} type="file" hidden multiple={!single} accept="image/*" onChange={(e) => upload(e.target.files)} />
-      <div className="input-group input-group-sm"><input className="form-control" placeholder="…or paste an image URL / path (e.g. /images/products/honey-350ml.svg)" value={url} onChange={(e) => setUrl(e.target.value)} />
+      <div className="input-group input-group-sm"><input className="form-control" placeholder="…or paste an image URL / path (e.g. /images/products/honey.webp)" value={url} onChange={(e) => setUrl(e.target.value)} />
         <button type="button" className="btn btn-outline-secondary" disabled={!url.trim()} onClick={() => { add(url.trim()); setUrl(""); }}>Add</button></div>
     </div>
   );

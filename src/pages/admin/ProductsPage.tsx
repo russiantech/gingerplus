@@ -1,3 +1,4 @@
+import { productImage } from "@/utils/images";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ConfirmDialog, Img, SearchInput, StatusBadge } from "@/components/common";
@@ -30,7 +31,7 @@ export default function ProductsPage() {
         </FilterBar>
         <DataTable rows={data?.items} loading={loading} page={page} pages={data?.pages} onPage={setPage} onRowClick={(p) => nav(`/admin/products/${p.id}`)} empty={{ title: "No products found" }}
           columns={[
-            { key: "p", header: "Product", render: (p) => <div className="d-flex align-items-center gap-2"><Img src={p.images[0]} className="thumb" /><div><div className="fw-semibold">{p.name}</div><div className="text-muted fs-xs">{p.category?.name ?? "Uncategorised"} · {p.flavor ?? "—"}</div></div></div> },
+            { key: "p", header: "Product", render: (p) => <div className="d-flex align-items-center gap-2"><Img src={productImage(p)} className="thumb" /><div><div className="fw-semibold">{p.name}</div><div className="text-muted fs-xs">{p.category?.name ?? "Uncategorised"} · {p.flavor ?? "—"}</div></div></div> },
             { key: "v", header: "Variants & prices", render: (p) => <div className="d-flex flex-column gap-1">{p.variants.map((v) => <div key={v.id} className="fs-sm d-flex align-items-center gap-2"><span className="text-muted">{v.label}</span><strong>{money(v.price)}</strong>
               <button className={`btn btn-sm py-0 ${v.stock <= 20 ? "btn-outline-danger" : "btn-outline-secondary"}`} title="Edit stock" onClick={(e) => { e.stopPropagation(); quickStock(v.id, v.stock); }}>{v.stock} in stock</button></div>)}</div> },
             { key: "s", header: "Status", render: (p) => <div className="d-flex gap-1"><StatusBadge status={p.is_active ? "published" : "draft"} label={p.is_active ? "Active" : "Archived"} />{p.is_featured && <span className="badge badge-soft-warning rounded-pill">Featured</span>}</div> },

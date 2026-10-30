@@ -1,3 +1,4 @@
+import { productImage } from "@/utils/images";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { CartLine, Product, Variant } from "@/types";
 import { safeGet, safeSet } from "@/utils/storage";
@@ -27,7 +28,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setLines((cur) => {
         const ex = cur.find((l) => l.variantId === v.id);
         if (ex) return cur.map((l) => (l.variantId === v.id ? { ...l, quantity: l.quantity + qty } : l));
-        return [...cur, { variantId: v.id, quantity: qty, productName: p.name, variantLabel: v.label, image: v.image_url ?? p.images?.[0] ?? null, unitPrice: v.effective_price ?? v.price, productSlug: p.slug }];
+        return [...cur, { variantId: v.id, quantity: qty, productName: p.name, variantLabel: v.label, image: productImage(p, v), unitPrice: v.effective_price ?? v.price, productSlug: p.slug }];
       });
       if (openDrawer) setOpen(true);
     },

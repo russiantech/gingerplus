@@ -17,12 +17,12 @@ export default function ProductEditPage() {
   const isNew = !id; useDocumentTitle(isNew ? "New product" : "Edit product");
   const [f, setF] = useState({ ...blank }); const [variants, setVariants] = useState<VForm[]>([blankVariant(1)]); const [busy, setBusy] = useState(false);
   const { data: cats } = useAsync(() => adminApi.categories.list(), []);
-  const { data: product, loading } = useAsync(() => (id ? adminApi.products.get(id) : Promise.resolve(null)), [id]);
-  useEffect(() => {
-    if (!product) return;
+  const { data, loading } = useAsync(() => (id ? adminApi.products.get(id) : Promise.resolve(null)), [id]);
+  const hydrate = (product: NonNullable<typeof data>) => {
     setF({ ...blank, ...product, flavor: product.flavor ?? "", tagline: product.tagline ?? "", short_description: product.short_description ?? "", description: product.description ?? "", ingredients: product.ingredients ?? "", storage: product.storage ?? "", accent_color: product.accent_color ?? "", meta_title: product.meta_title ?? "", meta_description: product.meta_description ?? "" });
     setVariants(product.variants.map((v) => ({ ...v, compare_at_price: v.compare_at_price ?? null, tiers: v.tiers.map((t) => ({ min_qty: t.min_qty, price: t.price, label: t.label })) } as VForm)));
-  }, [product]);
+  };
+  useEffect(() => { if (data) hydrate(data); /* eslint-disable-next-line */ }, [data]);
   const set = (k: string, v: unknown) => setF((s) => ({ ...s, [k]: v }));
   const setV = (i: number, k: string, v: unknown) => setVariants((vs) => vs.map((x, j) => (j === i ? { ...x, [k]: v } : x)));
 
@@ -33,7 +33,7 @@ export default function ProductEditPage() {
         variants: variants.map((v, i) => ({ ...v, sort_order: i + 1, price: Number(v.price), pack_equivalent: Number(v.pack_equivalent) || 1, compare_at_price: v.compare_at_price ? Number(v.compare_at_price) : null,
           tiers: v.tiers.filter((t) => t.min_qty && t.price !== "").map((t) => ({ min_qty: Number(t.min_qty), price: Number(t.price), label: t.label || null })) })) } as unknown as ProductInput;
       const saved = isNew ? await adminApi.products.create(payload) : await adminApi.products.update(id!, payload);
-      toast.success("Product saved"); if (isNew) nav(`/admin/products/${saved.id}`, { replace: true });
+      toast.success("Product saved"); if (isNew) nav(`/admin/products/${saved.id}`, { replace: true }); else hydrate(saved);
     } catch (err) { toast.error((err as Error).message); } finally { setBusy(false); }
   };
   if (!isNew && loading) return <PageLoader />;
@@ -70,6 +70,7 @@ export default function ProductEditPage() {
                   <div className="col-md-3"><Input label="Counts as packs" type="number" step="0.01" hint="For the online-payment pack limit" value={v.pack_equivalent} onChange={(e) => setV(i, "pack_equivalent", e.target.value)} /></div>
                   <div className="col-md-3"><Input label="Stock" type="number" value={v.stock} onChange={(e) => setV(i, "stock", Number(e.target.value))} /></div>
                 </div>
+                <ImageUploader label="Variant photo (optional — the product images are used when empty)" single value={v.image_url ? [v.image_url] : []} onChange={(x) => setV(i, "image_url", x[0] ?? null)} />
                 <div className="d-flex gap-4 flex-wrap"><Switch label="Track stock" checked={v.track_stock} onChange={(x) => setV(i, "track_stock", x)} /><Switch label="Active" checked={v.is_active} onChange={(x) => setV(i, "is_active", x)} /></div>
                 <div className="fw-medium fs-sm mb-1">Wholesale / volume price tiers</div>
                 {v.tiers.map((t, k) => (

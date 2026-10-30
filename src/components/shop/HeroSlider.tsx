@@ -38,7 +38,7 @@ export default function HeroSlider() {
   const resume = () => { setPaused(false); setTick((t) => t + 1); };
   const s = slides[idx];
   const next = slides[(idx + 1) % n];
-  const art = (x: typeof s, k: number) => x.image_url || `/images/hero/slide-${(k % 3) + 1}.svg`;
+  const art = (x: typeof s, k: number) => x.image_url || `/images/hero/slide-${(k % 3) + 1}.webp`;
 
   return (
     <section className={`hero-soft hero-slider container ${paused ? "paused" : ""}`} aria-roledescription="carousel" aria-label="Featured"
@@ -62,7 +62,7 @@ export default function HeroSlider() {
         </div>
         <div className="hero-visual" key={`v-${s.id}`}>
           <span className="hero-blob" />
-          <Img src={art(s, idx)} alt="" className="hero-art" fallback="/images/hero/slide-1.svg" loading="eager" />
+          <Img src={art(s, idx)} alt="" className="hero-art" fallback="/images/hero/slide-1.webp" loading="eager" />
           <span className="float-card a"><span className="soft-icon" style={{ width: 38, height: 38, fontSize: "1.1rem", borderRadius: 13 }}><i className="ri-goblet-line" /></span><span>350ml<b>Packed 24</b></span></span>
           <span className="float-card b"><span className="soft-icon" style={{ width: 38, height: 38, fontSize: "1.1rem", borderRadius: 13 }}><i className="ri-flashlight-line" /></span><span>125ml<b>Packed 20</b></span></span>
         </div>

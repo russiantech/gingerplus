@@ -1,3 +1,4 @@
+import { productImage } from "@/utils/images";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageHeader, Panel } from "@/components/admin";
@@ -32,7 +33,7 @@ export default function OrderCreatePage() {
   const found = useAsync(() => (dcq.length > 1 ? adminApi.customers.list({ q: dcq, page_size: 6 }) : Promise.resolve(null)), [dcq]);
   const products = useAsync(() => shopService.products(), []);
   const states = useAsync(() => publicService.states(), []);
-  const variants = (products.data ?? []).flatMap((p) => p.variants.map((v) => ({ ...v, pname: p.name.replace("Southern Rose ", "") })));
+  const variants = (products.data ?? []).flatMap((p) => p.variants.map((v) => ({ ...v, pname: p.name.replace("Southern Rose ", ""), img: productImage(p, v) })));
 
   const pick = async (c: CustomerListItem) => {
     setCustomer(c); setCq(""); setContact({ name: c.full_name, email: c.email, phone: c.phone ?? "" });
@@ -76,7 +77,7 @@ export default function OrderCreatePage() {
           </Panel>
           <Panel title="2 · Products">
             {products.loading ? <Spinner /> : <div className="d-flex flex-column gap-2">{variants.map((v) => (
-              <div key={v.id} className="d-flex align-items-center gap-3 border rounded-3 p-2"><img src={v.image_url ?? "/images/placeholders/image.svg"} alt="" className="thumb" />
+              <div key={v.id} className="d-flex align-items-center gap-3 border rounded-3 p-2"><img src={v.img ?? "/images/placeholders/image.svg"} alt="" className="thumb" />
                 <div className="flex-grow-1 min-w-0"><div className="fw-semibold text-truncate">{v.pname}</div><small className="text-muted">{v.label} · {money(v.effective_price ?? v.price)} · {v.stock} in stock</small></div>
                 <QtyStepper size="sm" min={0} value={lines[v.id] ?? 0} onChange={(n) => setLines({ ...lines, [v.id]: n })} /></div>))}</div>}
           </Panel>

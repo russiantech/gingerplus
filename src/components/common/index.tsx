@@ -4,10 +4,10 @@ import { STATUS_COLOR } from "@/utils/constants";
 
 /* ---------- Img with branded placeholder fallback ---------- */
 export function Img({ src, alt = "", className, ratio, fallback = "/images/placeholders/image.svg", ...rest }:
-  { src?: string | null; alt?: string; className?: string; ratio?: string; fallback?: string } & React.ImgHTMLAttributes<HTMLImageElement>) {
-  const [bad, setBad] = useState(false);
-  const s = !src || bad ? fallback : assetUrl(src);
-  const img = <img src={s} alt={alt} className={className} loading="lazy" onError={() => setBad(true)} {...rest} />;
+  { src?: string | null; alt?: string; className?: string; ratio?: string; fallback?: string } & Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src">) {
+  const [bad, setBad] = useState<string | null>(null);  // remembers WHICH src failed, so a new src (re-upload, gallery switch) is tried afresh
+  const s = !src || bad === src ? fallback : assetUrl(src);
+  const img = <img src={s} alt={alt} className={className} loading="lazy" onError={() => setBad(src ?? null)} {...rest} />;
   return ratio ? <div className="ratio" style={{ ["--bs-aspect-ratio" as string]: ratio }}>{img}</div> : img;
 }
 

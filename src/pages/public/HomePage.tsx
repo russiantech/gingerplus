@@ -42,14 +42,14 @@ export default function HomePage() {
             <h3 className="display-font h3 mt-3 mb-2">Ginger Plus<br />with {f.name}</h3><p className="text-muted" style={{ minHeight: 110, fontSize: ".9rem", maxWidth: "64%" }}>{f.text}</p>
             <div className="d-flex flex-wrap gap-2 pb-2" style={{ maxWidth: "62%" }}>
               <Link to={shopLink(f.key, "350ml")} className="btn btn-dark btn-sm">Shop 350ml</Link><Link to={shopLink(f.key, "125ml")} className="btn btn-light btn-sm">Shop 125ml</Link></div>
-            <img src={`/images/products/${f.key}-350ml.svg`} alt="" /></div></div>))}</div>
+            <img src={`/images/products/${f.key}.webp`} alt={`Ginger Plus with ${f.name}`} loading="lazy" /></div></div>))}</div>
       </div></section>
 
       <section className="section bg-cream"><div className="container">
         <div className="text-center mb-5"><div className="section-eyebrow">Bold Ginger. Perfect Plus.</div><h2 className="section-title display-font">Now in Two Sizes</h2></div>
         <div className="row g-4 justify-content-center">
-          <div className="col-md-5"><div className="size-card text-center"><img src="/images/products/honey-350ml.svg" height={170} alt="" className="mb-3" /><div className="stat-pill">350ml</div><p className="fw-semibold mb-1">Packed 24</p><p className="text-muted mb-3">Perfect for sharing, retail, and bars.</p><Link to="/shop" className="btn btn-primary btn-pill px-4">Shop 350ml</Link></div></div>
-          <div className="col-md-5"><div className="size-card text-center"><img src="/images/products/honey-125ml.svg" height={170} alt="" className="mb-3" /><div className="stat-pill">125ml</div><p className="fw-semibold mb-1">Packed 20</p><p className="text-muted mb-3">Perfect for shots, events, and on-the-go.</p><Link to="/shop" className="btn btn-primary btn-pill px-4">Shop 125ml</Link></div></div>
+          <div className="col-md-5"><div className="size-card text-center"><img src="/images/products/honey.webp" height={190} alt="" className="mb-3" /><div className="stat-pill">350ml</div><p className="fw-semibold mb-1">Packed 24</p><p className="text-muted mb-3">Perfect for sharing, retail, and bars.</p><Link to="/shop" className="btn btn-primary btn-pill px-4">Shop 350ml</Link></div></div>
+          <div className="col-md-5"><div className="size-card text-center"><img src="/images/products/honey.webp" height={130} alt="" className="mb-3" /><div className="stat-pill">125ml</div><p className="fw-semibold mb-1">Packed 20</p><p className="text-muted mb-3">Perfect for shots, events, and on-the-go.</p><Link to="/shop" className="btn btn-primary btn-pill px-4">Shop 125ml</Link></div></div>
         </div>
       </div></section>
 

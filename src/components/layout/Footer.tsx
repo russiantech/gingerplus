@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/common/BrandLogo";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSite } from "@/contexts/SiteContext";
@@ -23,7 +24,7 @@ export default function Footer() {
       <div className="container"><div className="footer-card">
         <div className="row g-4">
           <div className="col-lg-4">
-            <img src="/images/logo.svg" alt="Southern Rose" height={46} className="mb-3" />
+            <BrandLogo size={52} className="mb-3" />
             <p className="text-muted mb-3">{settings.brand.slogan}. Bold Nigerian ginger drinks made with real ingredients — Turmeric, Honey and Guarana.</p>
             <div className="d-flex gap-2">
               {[["ri-instagram-line", s.instagram], ["ri-facebook-fill", s.facebook], ["ri-tiktok-fill", s.tiktok]].map(([i, h]) => <a key={i} href={h} target="_blank" rel="noreferrer" className="social-btn" aria-label={i}><i className={i} /></a>)}

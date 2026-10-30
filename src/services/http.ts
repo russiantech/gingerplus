@@ -80,7 +80,11 @@ async function requestInner<T>(path: string, opts: ReqOptions, retried: boolean)
     const cached = method === "GET" ? readCache<T>(url) : undefined;
     if (cached !== undefined) { setOffline(true); return cached; }
     setOffline(true);
-    throw new ApiError(res?.status ?? 0, "network", res ? "Our service is temporarily unavailable. Please try again shortly." : "You appear to be offline. Check your connection and try again.");
+    const lost = typeof navigator !== "undefined" && navigator.onLine === false;
+    throw new ApiError(res?.status ?? 0, "network", res ? "Our service is temporarily unavailable. Please try again shortly."
+      : lost ? "You appear to be offline. Check your connection and try again."
+        : method === "GET" ? "We couldn't reach the server. Please try again in a moment."
+          : "We couldn't reach the server, so your change may not have been saved. Please check and try again.");
   }
   setOffline(false);
   if (res.status === 401 && tok && !retried && opts.auth !== false && (await refresh())) return requestInner<T>(path, opts, true);

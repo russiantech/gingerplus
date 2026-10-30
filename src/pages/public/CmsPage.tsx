@@ -13,6 +13,6 @@ export default function CmsPage() {
   if (loading) return <PageLoader />;
   if (error && !/not found/i.test(error)) return <div className="container section"><ErrorState message="We couldn't load this page right now. Please check your connection and try again." onRetry={reload} /></div>;
   if (error || !data) return <NotFoundPage />;
-  return (<><PageHero title={data.title} subtitle={data.subtitle} /><BlockRenderer blocks={data.blocks} />
+  return (<><PageHero title={data.title} subtitle={data.subtitle} image={data.banner_image_url} /><BlockRenderer blocks={data.blocks} />
     {data.meta_description && <meta name="description" content={data.meta_description} />}</>);
 }

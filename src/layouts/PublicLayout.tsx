@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/common/BrandLogo";
 import DotsIcon from "@/components/common/DotsIcon";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
@@ -61,7 +62,7 @@ export default function PublicLayout() {
       <header className="site-header">
         <div className="container"><div className="dock">
           <button className="dock-menu-btn d-lg-none" aria-label="Open menu" onClick={() => setMobile(true)}><DotsIcon /></button>
-          <Link to="/" className="me-lg-3 mx-auto mx-lg-0" aria-label="Southern Rose home"><img src="/images/logo.svg" alt="Southern Rose Ginger Plus" className="logo-img" /></Link>
+          <Link to="/" className="me-lg-3 mx-auto mx-lg-0" aria-label="Southern Rose home"><BrandLogo size={40} /></Link>
           <nav className="d-none d-lg-flex gap-1 flex-grow-1 align-items-center justify-content-center">
             {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.end} className="nav-item-link">{n.label}</NavLink>)}
             <Dropdown toggle={(o) => <span className={`nav-item-link cursor-pointer ${o ? "active" : ""}`}>More <i className="ri-arrow-down-s-line" /></span>}>

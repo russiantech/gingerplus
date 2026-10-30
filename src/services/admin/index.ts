@@ -114,7 +114,7 @@ export const adminApi = {
     testimonials: crud<Testimonial>("/admin/content/testimonials"),
     faqs: crud<Faq>("/admin/content/faqs"),
   },
-  media: { upload: (file: File) => api.upload<{ url: string; filename: string; size: number }>("/admin/media", file) },
+  media: { remove: (url: string) => api.del<{ deleted: boolean }>(`/admin/media?url=${encodeURIComponent(url)}`), upload: (file: File) => api.upload<{ url: string; filename: string; size: number }>("/admin/media", file) },
   partner: {
     store: () => api.get<Store>("/partner/store"),
     orders: () => api.get<AdminOrder[]>("/partner/orders"),

@@ -5,9 +5,10 @@ import { useToast } from "@/contexts/ToastContext";
 import type { Product, Variant } from "@/types";
 import "@/styles/storefront.css";
 import { FLAVOR_COLOR } from "@/utils/constants";
+import { isPhoto, productImage } from "@/utils/images";
 import FlavorChip from "./FlavorChip";
 
-export const variantImage = (p: Product, v?: Variant) => v?.image_url ?? p.images?.[0] ?? null;
+export const variantImage = productImage;
 export const unitPrice = (v: Variant) => v.effective_price ?? v.price;
 
 export default function ProductCard({ product, variant }: { product: Product; variant: Variant }) {
@@ -22,7 +23,7 @@ export default function ProductCard({ product, variant }: { product: Product; va
         <FlavorChip flavor={product.flavor} />
         {variant.promo_label && <span className="badge bg-danger rounded-pill position-absolute" style={{ top: 44, left: 12, zIndex: 2 }}>{variant.promo_label}</span>}
         <Link to={to} className="eye" aria-label={`View ${product.name}`}><span className="circle-btn light"><i className="ri-arrow-right-up-line" /></span></Link>
-        <Link to={to} className="text-decoration-none"><Img src={variantImage(product, variant)} alt={`${product.name} ${variant.label}`} /></Link>
+        <Link to={to} className="text-decoration-none"><Img src={variantImage(product, variant)} className={isPhoto(variantImage(product, variant)) ? "photo" : ""} alt={`${product.name} ${variant.label}`} /></Link>
       </div>
       <div className="info">
         <span className="size-tag"><i className="ri-goblet-line" />{variant.label}</span>

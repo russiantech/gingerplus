@@ -1,3 +1,4 @@
+import { isPhoto, productGallery } from "@/utils/images";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ErrorState, Img, Money, PageLoader, QtyStepper } from "@/components/common";
@@ -28,7 +29,7 @@ export default function ProductDetailPage() {
   const price = unitPrice(variant); const packs = Number(variant.pack_equivalent) * qty;
   const tier = [...variant.tiers].reverse().find((t) => qty >= t.min_qty);
   const shown = tier ? tier.price : price; const wholesale = packs >= settings.commerce.online_payment_max_packs;
-  const gallery = Array.from(new Set([variant.image_url, ...p.images].filter(Boolean) as string[]));
+  const gallery = productGallery(p, variant);
   const wa = waLink(settings.contact.whatsapp_numbers?.[0] ?? "", `Hello Southern Rose, I'd like to buy wholesale: ${qty} × ${p.name} (${variant.label}).`);
   const ld = { "@context": "https://schema.org", "@type": "Product", name: p.name, description: p.short_description, offers: { "@type": "Offer", priceCurrency: "NGN", price: price, availability: variant.in_stock ? "InStock" : "OutOfStock" } };
 
@@ -38,7 +39,7 @@ export default function ProductDetailPage() {
       <nav className="fs-sm mb-3 text-muted"><Link to="/" className="text-muted">Home</Link> / <Link to="/shop" className="text-muted">Shop</Link> / <span className="text-body">{p.name}</span></nav>
       <div className="row g-5">
         <div className="col-lg-6">
-          <div className="gallery-main position-relative"><FlavorChip flavor={p.flavor} /><Img src={gallery[img]} alt={p.name} loading="eager" /></div>
+          <div className="gallery-main position-relative"><FlavorChip flavor={p.flavor} /><Img src={gallery[img]} alt={p.name} loading="eager" className={isPhoto(gallery[img]) ? "photo" : ""} /></div>
           {gallery.length > 1 && <div className="d-flex gap-2 mt-3">{gallery.map((g, i) => <button key={g} className={`thumb-btn ${i === img ? "active" : ""}`} onClick={() => setImg(i)} aria-label={`Image ${i + 1}`}><Img src={g} alt="" /></button>)}</div>}
         </div>
         <div className="col-lg-6">

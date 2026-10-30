@@ -41,3 +41,14 @@ a.fw-semibold:hover, p a:hover, .fs-sm a:hover { text-decoration: underline; }
 @keyframes sr-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .top-progress span, .btn[data-loading]::before { animation-duration: 2s; } }
 .btn .spinner-border { color: currentColor !important; }
+
+/* ---- brand logo ---- */
+.brand-logo { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; color: inherit; }
+.brand-logo img { border-radius: 50%; box-shadow: 0 2px 10px rgba(60,42,18,.18); flex-shrink: 0; object-fit: cover; background: #fff; }
+.brand-words { display: inline-flex; flex-direction: column; line-height: 1.05; }
+.brand-words b { font-family: var(--sr-font-display, "Bricolage Grotesque", serif); font-weight: 700; font-size: 1.12rem; color: var(--sr-ink); letter-spacing: -.01em; }
+.brand-words small { font-size: .6rem; letter-spacing: .2em; color: var(--sr-gold-700, #b7791f); font-weight: 600; margin-top: 3px; }
+/* product imagery */
+.product-card .media img.photo, .gallery-main img.photo { object-fit: cover; filter: none; border-radius: 18px; width: 100%; }
+.product-card .media img.photo { height: 210px; }
+.gallery-main:has(img.photo) { padding: 0; overflow: hidden; } .gallery-main img.photo { max-height: 520px; border-radius: 0; }
